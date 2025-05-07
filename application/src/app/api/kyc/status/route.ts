@@ -1,0 +1,142 @@
+import { NextResponse } from "next/server";
+import axios from "axios";
+import crypto from "crypto";
+
+const SUMSUB_API_URL = "https://api.sumsub.com";
+
+function generateSignature(
+  ts: number,
+  secret: string,
+  method: string,
+  endpoint: string,
+  body: string
+): string {
+  const signString = `${ts}${method}${endpoint}${body}`;
+  return crypto.createHmac("sha256", secret).update(signString).digest("hex");
+}
+
+function formatWalletAddress(walletAddress: string): string {
+  // Remove any special characters and convert to lowercase
+  return walletAddress.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+async function getApplicantId(walletAddress: string): Promise<string> {
+  console.log("getting applicant id for:", walletAddress);
+  const endpoint = `/resources/applicants/-;externalUserId=${walletAddress}/one`;
+  const method = "GET";
+  const ts = Math.floor(Date.now() / 1000);
+  const signature = generateSignature(
+    ts,
+    process.env.SUMSUB_APP_SECRET!,
+    method,
+    endpoint,
+    ""
+  );
+
+  const response = await axios.get(`${SUMSUB_API_URL}${endpoint}`, {
+    headers: {
+      Accept: "application/json",
+      "X-App-Token": process.env.SUMSUB_APP_TOKEN,
+      "X-App-Access-Sig": signature,
+      "X-App-Access-Ts": ts.toString(),
+    },
+  });
+
+  if (!response.data?.id) {
+    throw new Error("Applicant not found");
+  }
+
+  return response.data.id;
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const walletAddress = searchParams.get("walletAddress");
+
+    if (!walletAddress) {
+      return NextResponse.json(
+        { error: "Wallet address is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!process.env.SUMSUB_APP_TOKEN || !process.env.SUMSUB_APP_SECRET) {
+      console.error("Missing Sumsub credentials:", {
+        hasAppToken: !!process.env.SUMSUB_APP_TOKEN,
+        hasAppSecret: !!process.env.SUMSUB_APP_SECRET,
+      });
+      return NextResponse.json(
+        { error: "Sumsub credentials not configured" },
+        { status: 500 }
+      );
+    }
+
+    const formattedWalletAddress = formatWalletAddress(walletAddress);
+
+    // First get the applicant ID
+    const applicantId = await getApplicantId(formattedWalletAddress);
+
+    // Then use the applicant ID to get the status
+    const endpoint = `/resources/applicants/${applicantId}/status`;
+    const method = "GET";
+    const ts = Math.floor(Date.now() / 1000);
+    const signature = generateSignature(
+      ts,
+      process.env.SUMSUB_APP_SECRET,
+      method,
+      endpoint,
+      ""
+    );
+
+    // Get applicant status from Sumsub
+    const response = await axios.get(`${SUMSUB_API_URL}${endpoint}`, {
+      headers: {
+        Accept: "application/json",
+        "X-App-Token": process.env.SUMSUB_APP_TOKEN,
+        "X-App-Access-Sig": signature,
+        "X-App-Access-Ts": ts.toString(),
+      },
+    });
+
+    console.log("kyc status response:", response.data);
+
+    // Map Sumsub status to our status
+    let status: "not_started" | "in_progress" | "completed" | "failed";
+
+    if (response.data.reviewStatus === "completed") {
+      status =
+        response.data.reviewResult?.reviewAnswer === "GREEN"
+          ? "completed"
+          : "failed";
+    } else if (response.data.reviewStatus === "pending") {
+      status = "in_progress";
+    } else {
+      status = "not_started";
+    }
+
+    return NextResponse.json({ status });
+  } catch (error) {
+    console.error("Failed to check KYC status:", error);
+
+    // Log detailed error information
+    if (axios.isAxiosError(error)) {
+      console.error("Error details:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        headers: error.response?.headers,
+        config: {
+          url: error.config?.url,
+          method: error.config?.method,
+          headers: error.config?.headers,
+        },
+      });
+    }
+
+    return NextResponse.json(
+      { error: "Failed to check KYC status" },
+      { status: 500 }
+    );
+  }
+}
