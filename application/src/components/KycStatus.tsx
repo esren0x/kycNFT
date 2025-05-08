@@ -22,7 +22,7 @@ export const KycStatus = ({
   if (!accessToken && status === "not_started") {
     return (
       <div className="text-center py-8">
-        <h2 className="text-2xl font-semibold mb-4">
+        <h2 className="text-2xl font-semibold text-primary-600 mb-4">
           Start Your KYC Verification
         </h2>
         <p className="text-gray-600 mb-6">
@@ -31,7 +31,7 @@ export const KycStatus = ({
         <button
           onClick={onStartKyc}
           disabled={isLoading}
-          className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 transition-colors"
         >
           {isLoading ? (
             <>
@@ -67,7 +67,7 @@ export const KycStatus = ({
 
   if (accessToken && status !== "completed") {
     return (
-      <div className="h-full border rounded-lg overflow-hidden">
+      <div className="h-full border border-primary-100 rounded-lg overflow-hidden">
         <SumsubWebSdk
           accessToken={accessToken}
           expirationHandler={onTokenExpiration}
@@ -90,9 +90,9 @@ export const KycStatus = ({
   if (status === "completed") {
     return (
       <div className="text-center py-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
           <svg
-            className="w-8 h-8 text-green-600"
+            className="w-8 h-8 text-primary-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -105,7 +105,7 @@ export const KycStatus = ({
             ></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold text-green-600 mb-2">
+        <h2 className="text-2xl font-semibold text-primary-600 mb-2">
           Verification Completed!
         </h2>
         <p className="text-gray-600">

@@ -9,7 +9,7 @@ export const WalletInfo = () => {
       <div className="space-y-2 text-sm">
         {publicKey && (
           <p className="flex items-center">
-            <h2 className="font-medium w-24">Public Key:</h2>
+            <span className="font-medium w-24">Public Key:</span>
             <span className="text-gray-600 font-mono text-xs truncate">
               {publicKey}
             </span>

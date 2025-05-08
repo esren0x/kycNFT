@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <WalletProviders>
-          <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+          <div className="flex flex-col min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8">
               {children}

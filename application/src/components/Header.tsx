@@ -5,11 +5,11 @@ import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
 export const Header = () => {
   const { publicKey } = useWallet();
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-gradient-to-r from-primary-50 to-white shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
+            <Link href="/" className="text-xl font-bold text-primary-600">
               Aleo KYC
             </Link>
           </div>
@@ -35,7 +35,7 @@ export const Header = () => {
           </nav>
           <div className="flex items-center">
             {publicKey && (
-              <WalletMultiButton className="!bg-blue-600 hover:!bg-blue-700" />
+              <WalletMultiButton className="!bg-primary-600 hover:!bg-primary-700" />
             )}
           </div>
         </div>
