@@ -6,8 +6,6 @@ import { useNft } from "@/hooks/useNft";
 import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
 import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { WalletInfo } from "@/components/WalletInfo";
 import { NftStatus } from "@/components/NftStatus";
 import { KycStatus } from "@/components/KycStatus";
@@ -96,16 +94,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
-
+    <div className=" flex flex-col bg-gray-50">
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-8">
-            <div className="flex justify-end mb-6">
-              <WalletMultiButton className="!bg-blue-600 hover:!bg-blue-700" />
-            </div>
-
             {publicKey ? (
               <div className="space-y-6">
                 <WalletInfo />
@@ -136,13 +128,16 @@ export default function Home() {
                   Please connect your wallet to start the KYC process and mint
                   your NFT
                 </p>
+                {!publicKey && (
+                  <div className="flex justify-center">
+                    <WalletMultiButton className="!bg-blue-600 hover:!bg-blue-700" />
+                  </div>
+                )}
               </div>
             )}
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
