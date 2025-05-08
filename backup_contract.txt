@@ -1,0 +1,201 @@
+// The 'nftonaleokyc' program - A soulbound NFT for KYC verification following ARC721.
+program nftonaleokyc.aleo {
+    // ARC721 Required - String representation using field arrays
+    struct BaseURI {
+        data1: field,
+        data2: field,
+        data3: field,
+        data4: field
+    }
+
+    struct TokenId {
+        data1: field,
+        data2: field,
+        data3: field,
+        data4: field
+    }
+
+    struct Attribute {
+        trait_type: [field; 4],
+        attr_value: [field; 4]
+    }
+
+    struct Metadata {
+        name: [field; 4],        // "KYC Verified Badge"
+        description: [field; 4], // "Badge indicating successful KYC verification"
+        kyc_status: u8,       // 1 = Completed
+        expiry_date: u64,     // Unix timestamp
+        risk_assessment: u8,   // 1 = Low, 2 = Medium, 3 = High
+        attributes: [Attribute; 3]
+    }
+
+    // NFT record definition per ARC721
+    record NFT {
+        owner: address,
+        data: TokenId,
+        edition: scalar,
+        metadata: Metadata
+    }
+
+    // NFTView record for public data access
+    record NFTView {
+        owner: address,
+        data: TokenId,
+        edition: scalar,
+        metadata: Metadata,
+        is_view: bool
+    }
+
+    // Required ARC721 mappings
+    mapping nft_commits: field => bool;
+    mapping nft_owners: field => address;
+    mapping nft_contents: field => TokenId;
+    mapping base_uri: u8 => field;
+
+    // KYC specific mappings
+    mapping is_kyc_valid: field => bool;
+    mapping deployer: u8 => address;
+
+    // Initialize the program with the deployer's address
+    async transition initialize(public deployer_address: address) -> Future {
+        // Store the deployer's address with key 0
+        return finalize_initialize(deployer_address);
+    }
+
+    async function finalize_initialize(deployer_address: address) {
+        Mapping::set(deployer, 0u8, deployer_address);
+    }
+
+    // Mint a new KYC NFT - only deployer can mint
+    async transition mint(
+        receiver: address,
+        token_id: TokenId,
+        metadata: Metadata,
+        edition: scalar
+    ) -> (NFT, NFTView, Future) {
+        // Create unique commit for this NFT per ARC721
+        let data_hash: field = BHP256::hash_to_field(token_id);
+        let nft_commit: field = BHP256::commit_to_field(data_hash, edition);
+        
+        // Create the NFT
+        let nft: NFT = NFT {
+            owner: receiver,
+            data: token_id,
+            edition: edition,
+            metadata: metadata
+        };
+
+        // Create the NFTView for public access
+        let nft_view: NFTView = NFTView {
+            owner: receiver,
+            data: token_id,
+            edition: edition,
+            metadata: metadata,
+            is_view: true
+        };
+
+        return (nft, nft_view, finalize_mint(nft_commit, self.caller));
+    }
+
+    async function finalize_mint(nft_commit: field, caller: address) {
+        // Ensure the caller is the deployer
+        let stored_deployer: address = Mapping::get(deployer, 0u8);
+        assert_eq(caller, stored_deployer);
+        
+        // Ensure this NFT doesn't already exist
+        assert(!Mapping::contains(nft_commits, nft_commit));
+        
+        // Mark this NFT as existing
+        Mapping::set(nft_commits, nft_commit, true);
+        
+        // Mark this KYC as valid
+        Mapping::set(is_kyc_valid, nft_commit, true);
+    }
+
+    // Make an NFT public - allows for public verification of the KYC status
+    async transition make_public(nft: NFT) -> (NFT, Future) {
+        // Get unique commit for this NFT
+        let data_hash: field = BHP256::hash_to_field(nft.data);
+        let nft_commit: field = BHP256::commit_to_field(data_hash, nft.edition);
+        
+        // Ensure the caller is the owner
+        assert_eq(self.caller, nft.owner);
+
+        return (nft, finalize_make_public(nft_commit, nft.owner));
+    }
+
+    async function finalize_make_public(nft_commit: field, owner: address) {
+        // Ensure the NFT exists
+        assert(Mapping::contains(nft_commits, nft_commit));
+        
+        // Register the NFT as public with its owner
+        Mapping::set(nft_owners, nft_commit, owner);
+    }
+
+    // Verify if an address has a valid KYC NFT
+    async transition verify_kyc(
+        public address_to_check: address,
+        public token_id: TokenId,
+        public edition: scalar
+    ) -> (bool, Future) {
+        // Get unique commit for this NFT
+        let data_hash: field = BHP256::hash_to_field(token_id);
+        let nft_commit: field = BHP256::commit_to_field(data_hash, edition);
+        
+        return (true, finalize_verify_kyc(nft_commit, address_to_check));
+    }
+
+    async function finalize_verify_kyc(nft_commit: field, address_to_check: address) {
+        // Check if the NFT exists and is valid
+        assert(Mapping::contains(nft_commits, nft_commit));
+        assert(Mapping::get(is_kyc_valid, nft_commit));
+
+        // Check if the NFT is public
+        assert(Mapping::contains(nft_owners, nft_commit));
+
+        // Check if the owner matches
+        let owner: address = Mapping::get(nft_owners, nft_commit);
+        assert_eq(owner, address_to_check);
+    }
+
+    // Update the KYC status (only deployer can do this)
+    async transition update_kyc_status(
+        token_id: TokenId,
+        edition: scalar,
+        new_valid_status: bool
+    ) -> (bool, Future) {
+        // Get unique commit for this NFT
+        let data_hash: field = BHP256::hash_to_field(token_id);
+        let nft_commit: field = BHP256::commit_to_field(data_hash, edition);
+        
+        return (true, finalize_update_kyc_status(nft_commit, self.caller, new_valid_status));
+    }
+
+    async function finalize_update_kyc_status(nft_commit: field, caller: address, new_valid_status: bool) {
+        // Ensure the NFT exists
+        assert(Mapping::contains(nft_commits, nft_commit));
+        
+        // Ensure the caller is the deployer
+        let stored_deployer: address = Mapping::get(deployer, 0u8);
+        assert_eq(caller, stored_deployer);
+        
+        // Update the KYC status
+        Mapping::set(is_kyc_valid, nft_commit, new_valid_status);
+    }
+
+    // Publish NFT content publicly (optional)
+    async transition publish_nft_content(
+        public token_id: TokenId,
+        public edition: scalar
+    ) -> (bool, Future) {
+        let data_hash: field = BHP256::hash_to_field(token_id);
+        let nft_commit: field = BHP256::commit_to_field(data_hash, edition);
+        
+        return (true, finalize_publish_nft_content(nft_commit, token_id));
+    }
+
+    async function finalize_publish_nft_content(nft_commit: field, token_id: TokenId) {
+        assert(Mapping::contains(nft_commits, nft_commit));
+        Mapping::set(nft_contents, nft_commit, token_id);
+    }
+}

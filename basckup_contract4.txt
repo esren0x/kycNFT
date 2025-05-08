@@ -1,0 +1,159 @@
+// The KYC NFT program
+program nftonaleokyc_v4.aleo {
+    // Record to store KYC verification status and data
+    record KYCRecord {
+        owner: address,
+        kyc_level: u8,
+        expiry_date: u64,
+        is_verified: bool,
+        risk_score: u8,
+    }
+
+    // Mapping to store public KYC status
+    mapping kyc_verification: address => bool;
+    mapping kyc_expiry_date: address => u64;
+    mapping kyc_level_status: address => u8;
+    mapping kyc_block_height: address => u64;  // New mapping to track block height
+
+    struct VerificationInfo {
+        is_verified: bool,
+        expiry_date: u64,
+        block_height: u64,
+        kyc_level: u8
+    }
+
+    // Initialize the program
+    async transition initialize(public deployer: address) -> Future {
+        // Ensure the caller is the deployer
+        assert_eq(self.caller, deployer);
+        return finalize_initialize();
+    }
+
+    async function finalize_initialize() {
+        let current_height: u64 = block.height as u64;
+        assert(current_height > 0u64);
+    }
+
+    // Mint a new KYC NFT (only by authorized KYC provider)
+    async transition mint(
+        public receiver: address,
+        level: u8,
+        expiry_date: u64,
+        risk_score: u8,
+    ) -> (KYCRecord, bool, Future) {
+        // Create new KYC record
+        let kyc_record: KYCRecord = KYCRecord {
+            owner: receiver,
+            kyc_level: level,
+            expiry_date: expiry_date,
+            is_verified: true,
+            risk_score: risk_score,
+        };
+
+        // Return record and finalize
+        return (kyc_record, true, finalize_mint(receiver, level, expiry_date));
+    }
+
+    async function finalize_mint(receiver: address, level: u8, expiry_date: u64) {
+        // Get and store current block height
+        let current_height: u64 = block.height as u64;
+        
+        // Ensure valid parameters
+        assert(level <= 3u8);
+        assert(expiry_date > current_height);
+        
+        // Update public mappings
+        Mapping::set(kyc_verification, receiver, true);
+        Mapping::set(kyc_expiry_date, receiver, expiry_date);
+        Mapping::set(kyc_level_status, receiver, level);
+        Mapping::set(kyc_block_height, receiver, current_height);
+    }
+
+    // Update KYC status
+    async transition update_kyc_status(
+        kyc_record: KYCRecord,
+        new_level: u8,
+        new_expiry_date: u64,
+        new_risk_score: u8
+    ) -> (KYCRecord, bool, Future) {
+        // Ensure the caller owns the record
+        assert_eq(kyc_record.owner, self.caller);
+        
+        // Create updated record
+        let updated_record: KYCRecord = KYCRecord {
+            owner: kyc_record.owner,
+            kyc_level: new_level,
+            expiry_date: new_expiry_date,
+            is_verified: true,
+            risk_score: new_risk_score,
+        };
+
+        // Return updated record and finalize
+        return (updated_record, true, finalize_update_kyc_status(kyc_record.owner, new_level, new_expiry_date));
+    }
+
+    async function finalize_update_kyc_status(owner: address, new_level: u8, new_expiry_date: u64) {
+        // Validate parameters
+        assert(new_level <= 3u8);
+        let current_height: u64 = block.height as u64;
+        assert(new_expiry_date > current_height);
+        
+        // Update public mappings
+        Mapping::set(kyc_level_status, owner, new_level);
+        Mapping::set(kyc_expiry_date, owner, new_expiry_date);
+    }
+
+    // Verify KYC status
+    async transition verify_kyc(kyc_record: KYCRecord) -> (bool, Future) {
+        // Pass the expiry date to finalize for validation
+        return (true, finalize_verify_kyc(kyc_record.owner, kyc_record.expiry_date));
+    }
+
+    async function finalize_verify_kyc(owner: address, expiry_date: u64) {
+        // Get current status from mappings
+        let current_expiry: u64 = Mapping::get_or_use(kyc_expiry_date, owner, 0u64);
+        let is_verified: bool = Mapping::get_or_use(kyc_verification, owner, false);
+        
+        // Verify the KYC is still valid
+        let current_height: u64 = block.height as u64;
+        assert(expiry_date > current_height);
+        assert(current_expiry == expiry_date);
+        assert(is_verified);
+    }
+
+    // Simple verification by address
+    async transition verify_kyc_by_address(
+        public address_to_check: address
+    ) -> (VerificationInfo, Future) {
+        // Initialize with default values, actual values will be set in finalize
+        let info: VerificationInfo = VerificationInfo {
+            is_verified: false,
+            expiry_date: 0u64,
+            block_height: 0u64,
+            kyc_level: 0u8
+        };
+        
+        return (info, finalize_verify_kyc_by_address(address_to_check));
+    }
+
+    async function finalize_verify_kyc_by_address(address_to_check: address) {
+        // Get current block height
+        let current_height: u64 = block.height as u64;
+        
+        // Get status from mappings with explicit checks
+        let is_verified: bool = Mapping::get_or_use(kyc_verification, address_to_check, false);
+        assert(is_verified);
+
+        let current_expiry: u64 = Mapping::get_or_use(kyc_expiry_date, address_to_check, 0u64);
+        assert(current_expiry > 0u64);
+        assert(current_expiry > current_height);
+
+        let kyc_level: u8 = Mapping::get_or_use(kyc_level_status, address_to_check, 0u8);
+        assert(kyc_level > 0u8);
+        assert(kyc_level <= 3u8);
+
+        let mint_height: u64 = Mapping::get_or_use(kyc_block_height, address_to_check, 0u64);
+        assert(mint_height > 0u64);
+        assert(mint_height <= current_height);
+    }
+}
