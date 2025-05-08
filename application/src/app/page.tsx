@@ -60,13 +60,13 @@ const WalletInfo = () => {
 
 export default function Home() {
   const { publicKey, signMessage, wallet } = useWallet();
-  const { initializeKyc, kycStatus, checkKycStatus } = useKyc();
+  const { initializeKyc, kycStatus, checkKycStatus, setKycStatus } = useKyc();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (publicKey && kycStatus !== "failed") {
+      if (publicKey && kycStatus !== "failed" && kycStatus !== "completed") {
         checkKycStatus(publicKey);
       }
     }, 30000);
@@ -108,6 +108,20 @@ export default function Home() {
 
   const handleMessage = (type: string, payload: Record<string, unknown>) => {
     console.log("WebSDK Message:", type, payload);
+
+    if (type === "idCheck.onApplicantStatusChanged") {
+      const reviewResult = payload.reviewResult as { reviewAnswer: string };
+      const reviewStatus = payload.reviewStatus as string;
+
+      if (reviewStatus === "completed") {
+        if (reviewResult.reviewAnswer === "GREEN") {
+          checkKycStatus(publicKey!);
+        } else {
+          // If the review answer is not GREEN, mark as failed
+          setKycStatus("failed");
+        }
+      }
+    }
   };
 
   const handleError = (error: Error) => {
@@ -174,7 +188,7 @@ export default function Home() {
                 )}
 
                 {accessToken && kycStatus !== "completed" && (
-                  <div className="h-[600px] border rounded-lg overflow-hidden">
+                  <div className="h-full border rounded-lg overflow-hidden">
                     <SumsubWebSdk
                       accessToken={accessToken}
                       expirationHandler={handleTokenExpiration}
@@ -240,7 +254,8 @@ export default function Home() {
                       Verification Failed
                     </h2>
                     <p className="text-gray-600 mb-6">
-                      We couldn't complete your verification. Please try again.
+                      We couldn&apos;t complete your verification. Please try
+                      again.
                     </p>
                     <button
                       onClick={handleStartKyc}

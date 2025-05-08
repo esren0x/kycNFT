@@ -10,6 +10,7 @@ interface KycState {
     signature: string
   ) => Promise<{ token: string }>;
   checkKycStatus: (walletAddress: string) => Promise<void>;
+  setKycStatus: (status: KycStatus) => void;
 }
 
 export const useKyc = create<KycState>((set) => ({
@@ -42,11 +43,14 @@ export const useKyc = create<KycState>((set) => ({
       );
 
       if (response.data.status) {
-        
         set({ kycStatus: response.data.status });
       }
     } catch (error) {
       console.error("Failed to check KYC status:", error);
     }
+  },
+
+  setKycStatus: (status: KycStatus) => {
+    set({ kycStatus: status });
   },
 }));

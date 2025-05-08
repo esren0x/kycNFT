@@ -50,6 +50,7 @@ async function getApplicantId(walletAddress: string): Promise<string> {
 }
 
 export async function GET(request: Request) {
+  console.log("getting kyc status");
   try {
     const { searchParams } = new URL(request.url);
     const walletAddress = searchParams.get("walletAddress");
@@ -98,8 +99,6 @@ export async function GET(request: Request) {
         "X-App-Access-Ts": ts.toString(),
       },
     });
-
-    console.log("kyc status response:", response.data);
 
     // Map Sumsub status to our status
     let status: "not_started" | "in_progress" | "completed" | "failed";

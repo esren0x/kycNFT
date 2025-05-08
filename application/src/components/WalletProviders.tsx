@@ -23,7 +23,7 @@ export default function WalletProviders({
     <WalletProvider
       wallets={walletsInfo}
       decryptPermission={DecryptPermission.UponRequest}
-      network={WalletAdapterNetwork.MainnetBeta}
+      network={WalletAdapterNetwork.TestnetBeta}
       autoConnect
     >
       <WalletModalProvider>{children}</WalletModalProvider>

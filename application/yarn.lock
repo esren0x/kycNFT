@@ -7,21 +7,6 @@
   resolved "https://registry.npmjs.org/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
-"@aleohq/sdk@^0.1.0":
-  version "0.6.9"
-  resolved "https://registry.yarnpkg.com/@aleohq/sdk/-/sdk-0.6.9.tgz#cadd608a1cd29f0598fff0081eaa58e399f6321e"
-  integrity sha512-XerwoyQvwYsAWWir7gWWC9i9ZZc7DvbP9Gfkqv92lEKDILe/Ac/PIu7cRlJsRqv09aih8dgVXsKROU303z1PJQ==
-  dependencies:
-    "@aleohq/wasm" "^0.6.0"
-    comlink "^4.4.1"
-    mime "^3.0.0"
-    sync-request "^6.1.0"
-
-"@aleohq/wasm@^0.6.0":
-  version "0.6.9"
-  resolved "https://registry.npmjs.org/@aleohq/wasm/-/wasm-0.6.9.tgz"
-  integrity sha512-lDQePcCN+H4uyiCk3Vy22k+vpppogCSMveZk2f3qV3v0H0MCetA1dqFxR3HMZr73n2Yw7B6ZkwTlfotTdcGtPA==
-
 "@alloc/quick-lru@^5.2.0":
   version "5.2.0"
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
@@ -1282,7 +1267,7 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
-comlink@^4.4.1, comlink@^4.4.2:
+comlink@^4.4.2:
   version "4.4.2"
   resolved "https://registry.npmjs.org/comlink/-/comlink-4.4.2.tgz"
   integrity sha512-OxGdvBmJuNKSCMO4NTl1L47VRp6xn2wG4F/2hYzB6tiCb709otOxtEYCSvK80PtjODfXXZu8ds+Nw5kVCjqd2g==
@@ -2790,11 +2775,6 @@ mime-types@^3.0.0, mime-types@^3.0.1:
   integrity sha512-xRc4oEhT6eaBpU1XF7AjpOFD+xQmXNB5OVKwp4tqCuBpHLS/ZbBDrc07mYTDqVMg6PfxUjjNp85O6Cd2Z/5HWA==
   dependencies:
     mime-db "^1.54.0"
-
-mime@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npmjs.org/mime/-/mime-3.0.0.tgz"
-  integrity sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A==
 
 mime@^4.0.6:
   version "4.0.7"
