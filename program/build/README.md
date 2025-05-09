@@ -1,4 +1,4 @@
-# nftonaleokyc_v5.aleo
+# nftonaleokyc_v12.aleo
 
 ## Build Guide
 
