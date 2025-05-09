@@ -13,7 +13,7 @@ import { KycStatus } from "@/components/KycStatus";
 export default function Home() {
   const { publicKey, signMessage, wallet } = useWallet();
   const { initializeKyc, kycStatus, checkKycStatus, setKycStatus } = useKyc();
-  const { nftStatus, isExpired, expirationBlock, checkNftStatus, mockMintNft } = useNft();
+  const { nftStatus, isExpired, expirationBlock, checkNftStatus } = useNft();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -34,10 +34,15 @@ export default function Home() {
   }, [publicKey, checkKycStatus, kycStatus]);
 
   useEffect(() => {
-    if (kycStatus === "completed" && publicKey) {
-      mockMintNft(publicKey);
+    if (kycStatus === "completed" && publicKey && nftStatus !== "minted") {
+      // Check the nft status every second until it is minted
+      const interval = setInterval(() => {
+        checkNftStatus(publicKey);
+      }, 1000);
+
+      return () => clearInterval(interval);
     }
-  }, [kycStatus, publicKey, mockMintNft]);
+  }, [kycStatus, publicKey, checkNftStatus, nftStatus]);
 
   const handleStartKyc = async () => {
     if (!publicKey || !signMessage) return;
