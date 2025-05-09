@@ -1,9 +1,14 @@
 interface NftStatusProps {
   status: string;
-  expirationDate: Date | null;
+  expirationBlock: number | null;
+  isExpired: boolean | null;
 }
 
-export const NftStatus = ({ status, expirationDate }: NftStatusProps) => {
+export const NftStatus = ({
+  status,
+  expirationBlock,
+  isExpired,
+}: NftStatusProps) => {
   if (status === "not_minted") {
     return (
       <div className="text-center py-8">
@@ -32,7 +37,7 @@ export const NftStatus = ({ status, expirationDate }: NftStatusProps) => {
     );
   }
 
-  if (status === "minted" && expirationDate) {
+  if (status === "minted") {
     return (
       <div className="text-center py-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
@@ -50,13 +55,28 @@ export const NftStatus = ({ status, expirationDate }: NftStatusProps) => {
             ></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold text-primary-600 mb-2">
-          NFT Minted Successfully!
-        </h2>
-        <p className="text-gray-600 mb-2">Your KYC NFT is valid until:</p>
-        <p className="text-gray-800 font-semibold">
-          {expirationDate.toLocaleDateString()}
-        </p>
+
+        {!isExpired ? (
+          <>
+            <h2 className="text-2xl font-semibold text-primary-600 mb-2">
+              NFT Minted Successfully!
+            </h2>
+            <p className="text-gray-600 mb-2">
+              Your KYC NFT is valid until the block:
+            </p>
+            <p className="text-gray-800 font-semibold">{expirationBlock}</p>
+          </>
+        ) : (
+          <>
+            <h2 className="text-2xl font-semibold text-red-600 mb-2">
+              NFT Expired
+            </h2>
+            <p className="text-gray-600 mb-2">
+              Your KYC NFT validity has expired on the block:
+            </p>
+            <p className="text-gray-800 font-semibold">{expirationBlock}</p>
+          </>
+        )}
       </div>
     );
   }

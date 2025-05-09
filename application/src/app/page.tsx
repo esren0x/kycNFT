@@ -13,7 +13,7 @@ import { KycStatus } from "@/components/KycStatus";
 export default function Home() {
   const { publicKey, signMessage, wallet } = useWallet();
   const { initializeKyc, kycStatus, checkKycStatus, setKycStatus } = useKyc();
-  const { nftStatus, expirationDate, checkNftStatus, mockMintNft } = useNft();
+  const { nftStatus, isExpired, expirationBlock, checkNftStatus, mockMintNft } = useNft();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -105,7 +105,8 @@ export default function Home() {
                 {nftStatus === "minted" ? (
                   <NftStatus
                     status={nftStatus}
-                    expirationDate={expirationDate}
+                    expirationBlock={expirationBlock}
+                    isExpired={isExpired}
                   />
                 ) : kycStatus === "completed" ? (
                   <div className="text-center py-8">
