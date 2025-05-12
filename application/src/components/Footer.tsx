@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Footer = () => (
   <footer className="bg-white border-t">
     <div className="container mx-auto px-4 py-8">
@@ -10,7 +12,37 @@ export const Footer = () => (
             Secure and compliant identity verification for the Aleo ecosystem.
           </p>
         </div>
-        <div></div>
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Quick Links
+          </h3>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href="/"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/verify"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Verify
+              </Link>
+            </li>
+            {/* <li>
+              <Link
+                href="/status"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Status
+              </Link>
+            </li> */}
+          </ul>
+        </div>
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact</h3>
           <p className="text-gray-600">

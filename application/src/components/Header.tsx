@@ -10,11 +10,11 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="text-xl font-bold text-primary-600">
-              Aleo KYC
+              kyc NFT
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            {/* <Link
+            <Link
               href="/"
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -26,7 +26,7 @@ export const Header = () => {
             >
               Verify
             </Link>
-            <Link
+            {/* <Link
               href="/status"
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -34,8 +34,10 @@ export const Header = () => {
             </Link> */}
           </nav>
           <div className="flex items-center">
-            {publicKey && (
+            {publicKey ? (
               <WalletMultiButton className="!bg-primary-600 hover:!bg-primary-700" />
+            ) : (
+              <div className="h-[48px] w-[165px]" />
             )}
           </div>
         </div>

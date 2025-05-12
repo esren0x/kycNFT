@@ -33,6 +33,16 @@ module.exports = {
           900: "#701a75",
         },
       },
+      animation: {
+        "text-scroll": "text-scroll 15s linear infinite",
+        "spin-slow": "spin 8s linear infinite",
+      },
+      keyframes: {
+        "text-scroll": {
+          "0%": { "--tw-text-scroll-offset": "0%" },
+          "100%": { "--tw-text-scroll-offset": "-100%" },
+        },
+      },
     },
   },
   plugins: [],
