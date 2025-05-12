@@ -33,14 +33,14 @@ export const Footer = () => (
                 Verify
               </Link>
             </li>
-            {/* <li>
+            <li>
               <Link
-                href="/status"
+                href="/kyc"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
               >
-                Status
+                Get Verified
               </Link>
-            </li> */}
+            </li>
           </ul>
         </div>
         <div>
