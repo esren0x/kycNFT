@@ -25,10 +25,11 @@ export const verifyKyc = async (walletAddress: string, wallet: Wallet) => {
 };
 
 interface NftState {
-  nftStatus: "not_minted" | "minted" | "expired";
+  nftStatus: "unverified" | "not_minted" | "minted" | "expired";
   isExpired: boolean | null;
   expirationBlock: number | null;
   checkNftStatus: (walletAddress: string) => Promise<void>;
+  resetNftStatus: () => void;
   // mockMintNft: (walletAddress: string) => Promise<void>;
 }
 
@@ -62,6 +63,13 @@ export const useNft = create<NftState>((set) => ({
         isExpired: null,
       });
     }
+  },
+  resetNftStatus: () => {
+    set({
+      nftStatus: "unverified",
+      isExpired: null,
+      expirationBlock: null,
+    });
   },
 
   // mockMintNft: async (walletAddress: string) => {

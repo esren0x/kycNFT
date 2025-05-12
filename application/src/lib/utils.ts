@@ -15,3 +15,4 @@ export const fetchBlockHeight = async () => {
     console.error("Error fetching block height:", err);
   }
 };
+

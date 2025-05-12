@@ -1,7 +1,19 @@
 "use client";
 import { OwnerInformation } from "@/lib/mappings";
+import { convertLeoAddressToANSDomain } from "@/lib/ans";
+import { useEffect, useState } from "react";
 
 export default function NFT({ owner }: { owner: OwnerInformation }) {
+  const [ansDomain, setAnsDomain] = useState<string | undefined>();
+
+  useEffect(() => {
+    const fetchAnsDomain = async () => {
+      const domain = await convertLeoAddressToANSDomain(owner.walletAddress);
+      setAnsDomain(domain);
+    };
+    fetchAnsDomain();
+  }, [owner.walletAddress]);
+
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
@@ -227,9 +239,11 @@ export default function NFT({ owner }: { owner: OwnerInformation }) {
           </div>
 
           <div>
-            <p className="text-gray-400 text-sm">Owner ID</p>
+            <p className="text-gray-400 text-sm">
+              {ansDomain ? "Owner ANS" : "Owner ID"}
+            </p>
             <p className="text-white font-mono text-sm">
-              {formatAddress(owner.ownerId)}
+              {ansDomain || formatAddress(owner.ownerId)}
             </p>
           </div>
 
