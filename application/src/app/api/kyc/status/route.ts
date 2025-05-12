@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import crypto from "crypto";
+import { executeMintTransaction } from "../utils/transaction";
 
 const SUMSUB_API_URL = "https://api.sumsub.com";
 
@@ -104,10 +105,25 @@ export async function GET(request: Request) {
     let status: "not_started" | "in_progress" | "completed" | "failed";
 
     if (response.data.reviewStatus === "completed") {
-      status =
-        response.data.reviewResult?.reviewAnswer === "GREEN"
-          ? "completed"
-          : "failed";
+      console.log("minting the nft");
+
+      try {
+        // Execute the mint transaction with KYC level 1
+        const tx_id = await executeMintTransaction(
+          formattedWalletAddress,
+          1 // KYC level 1 for basic verification
+        );
+
+        console.log("NFT mint transaction submitted:", tx_id);
+
+        status =
+          response.data.reviewResult?.reviewAnswer === "GREEN"
+            ? "completed"
+            : "failed";
+      } catch (mintError) {
+        console.error("Failed to mint NFT:", mintError);
+        throw mintError;
+      }
     } else if (response.data.reviewStatus === "pending") {
       status = "in_progress";
     } else {
