@@ -6,7 +6,8 @@ import {
   AleoNetworkClient,
   NetworkRecordProvider,
   ProgramManager,
-  AleoKeyProvider
+  AleoKeyProvider,
+  AleoKeyProviderParams
 } from '@provablehq/sdk';
 import fetch from 'node-fetch';
 
@@ -16,7 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const TESTNET_URL = "https://api.explorer.provable.com/v1";
+const TESTNET_URL = "http://184.169.231.113:3030";
 
 
 app.post('/mint', async (req, res) => {
@@ -43,22 +44,21 @@ app.post('/mint', async (req, res) => {
 
 
 
-    // const keyProvider = new AleoKeyProvider();
-    // keyProvider.useCache = true;
+    const keyProvider = new AleoKeyProvider();
+    keyProvider.useCache = true;
     const account = new Account({ privateKey: privateKey });
     // const privateKeyObject = PrivateKey.from_string(privateKey);
     
     const networkClient = new AleoNetworkClient(TESTNET_URL);
-    // const recordProvider = new NetworkRecordProvider(account, networkClient);
-    // const keyProvider = new AleoKeyProvider();
-    // keyProvider.useCache = true;
+    const recordProvider = new NetworkRecordProvider(account, networkClient);
+    keyProvider.useCache = true;
     const programManager = new ProgramManager(TESTNET_URL);
     programManager.setHost(TESTNET_URL);
     programManager.setAccount(account);
 
     // For example: "cacheKey": "hello_hello:hello"
     const cacheKey = `${programId}:${aleoFunction}`;
-    // const keySearchParams = new AleoKeyProviderParams({ "cacheKey": cacheKey });
+    const keySearchParams = new AleoKeyProviderParams({ "cacheKey": cacheKey });
 
 
     const inputs = [
@@ -66,23 +66,25 @@ app.post('/mint', async (req, res) => {
       `${kycLevel}u8`
     ];
 
-    const executionResponse = await programManager.execute({
+    // Builts the transaction
+    const executionResponse = await programManager.buildExecutionTransaction({
       programName: programId,
       functionName: aleoFunction,
       priorityFee: 0.1,
       privateFee: false,
       inputs: inputs,
-      // keySearchParams: keySearchParams
+      keySearchParams: keySearchParams
     });
 
+    // Submits the transaction
+    const tx_id = await programManager.networkClient.submitTransaction(executionResponse);
 
-    const transaction = await programManager.networkClient.getTransaction(executionResponse);
-
-
-
-
-
-    res.json({ success: true, transactionId: transaction });
+    // Gets the transaction from the block explorer. 
+    // add a wait for the transaction to be mined
+    // wait for 20 seconds
+    await new Promise(resolve => setTimeout(resolve, 20000));
+    const tx_id_confirmed = await programManager.networkClient.getTransitionId(tx_id);
+    res.json({ success: true, transactionId: tx_id_confirmed });
   } catch (error) {
     console.error("Full error:", error);
     console.error("Error as JSON:", JSON.stringify(error, Object.getOwnPropertyNames(error)));

@@ -13,7 +13,7 @@ import { KycStatus } from "@/components/KycStatus";
 export default function KYC() {
   const { publicKey, signMessage, wallet } = useWallet();
   const { initializeKyc, kycStatus, checkKycStatus, setKycStatus } = useKyc();
-  const { nftStatus, isExpired, expirationBlock, checkNftStatus } = useNft();
+  const { nftStatus, isExpired, expirationBlock, checkNftStatus, setTransactionId, startPolling } = useNft();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -35,14 +35,12 @@ export default function KYC() {
 
   useEffect(() => {
     if (kycStatus === "completed" && publicKey && nftStatus !== "minted") {
-      // Check the nft status every second until it is minted
-      const interval = setInterval(() => {
-        checkNftStatus(publicKey);
-      }, 1000);
-
-      return () => clearInterval(interval);
+      // Call the backend to trigger mint and get transactionId
+      pollKycStatus();
     }
-  }, [kycStatus, publicKey, checkNftStatus, nftStatus]);
+    // Only run when KYC is completed and NFT is not minted
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kycStatus, publicKey, nftStatus]);
 
   const handleStartKyc = async () => {
     if (!publicKey || !signMessage) return;
@@ -98,6 +96,24 @@ export default function KYC() {
     console.error("WebSDK Error:", error);
   };
 
+  const pollKycStatus = async () => {
+    if (!publicKey) return;
+    
+    try {
+      const response = await fetch(`/api/kyc/status?walletAddress=${publicKey}`);
+      const data = await response.json();
+      
+      setKycStatus(data.status);
+      
+      if (data.transactionId) {
+        setTransactionId(data.transactionId);
+        startPolling(publicKey);
+      }
+    } catch (error) {
+      console.error("Failed to check KYC status:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -140,8 +156,11 @@ export default function KYC() {
                     <h2 className="text-2xl font-semibold text-primary-600 mb-2">
                       Minting Your NFT
                     </h2>
-                    <p className="text-gray-600">
-                      Please wait while we mint your KYC NFT...
+                    <p className="text-gray-600 mb-4">
+                      We are minting your NFT. This may take a few minutes...
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      You can close this window. We'll notify you when the minting is complete.
                     </p>
                   </div>
                 ) : (

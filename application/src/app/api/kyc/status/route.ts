@@ -105,24 +105,34 @@ export async function GET(request: Request) {
     let status: "not_started" | "in_progress" | "completed" | "failed";
 
     if (response.data.reviewStatus === "completed") {
-      console.log("minting the nft");
+      status =
+      response.data.reviewResult?.reviewAnswer === "GREEN"
+        ? "completed"
+        : "failed";
 
-      try {
-        // Execute the mint transaction with KYC level 1
-        const tx_id = await executeMintTransaction(
-          formattedWalletAddress,
-          1 // KYC level 1 for basic verification
-        );
+      if (status === "completed") {
+        try {
+          console.log("minting the nft");
+          
+          // Execute the mint transaction with KYC level 1
+          const tx_id = await executeMintTransaction(
+            formattedWalletAddress,
+            1 // KYC level 1 for basic verification
+          );
 
-        console.log("NFT mint transaction submitted:", tx_id);
+          console.log("NFT mint transaction submitted:", tx_id);
+          
+          // Return both status and transaction ID
+          return NextResponse.json({ 
+            status,
+            transactionId: tx_id,
+            message: "NFT mint transaction submitted successfully"
+          });
 
-        status =
-          response.data.reviewResult?.reviewAnswer === "GREEN"
-            ? "completed"
-            : "failed";
-      } catch (mintError) {
-        console.error("Failed to mint NFT:", mintError);
-        throw mintError;
+        } catch (mintError) {
+          console.error("Failed to mint NFT:", mintError);
+          throw mintError;
+        }
       }
     } else if (response.data.reviewStatus === "pending") {
       status = "in_progress";

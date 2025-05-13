@@ -25,18 +25,24 @@ export const verifyKyc = async (walletAddress: string, wallet: Wallet) => {
 };
 
 interface NftState {
-  nftStatus: "unverified" | "not_minted" | "minted" | "expired";
+  nftStatus: "unverified" | "not_minted" | "minting" | "minted" | "expired";
   isExpired: boolean | null;
   expirationBlock: number | null;
+  transactionId: string | null;
   checkNftStatus: (walletAddress: string) => Promise<void>;
   resetNftStatus: () => void;
-  // mockMintNft: (walletAddress: string) => Promise<void>;
+  setTransactionId: (txId: string) => void;
+  startPolling: (walletAddress: string) => void;
+  stopPolling: () => void;
 }
 
-export const useNft = create<NftState>((set) => ({
+let pollingInterval: NodeJS.Timeout | null = null;
+
+export const useNft = create<NftState>((set, get) => ({
   nftStatus: "not_minted",
   isExpired: null,
   expirationBlock: null,
+  transactionId: null,
   checkNftStatus: async (walletAddress: string) => {
     try {
       const ownerId = await getOwnerIdFromMapping(walletAddress);
@@ -69,20 +75,39 @@ export const useNft = create<NftState>((set) => ({
       nftStatus: "unverified",
       isExpired: null,
       expirationBlock: null,
+      transactionId: null,
+    });
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      pollingInterval = null;
+    }
+  },
+  setTransactionId: (txId: string) => {
+    set({
+      transactionId: txId,
+      nftStatus: "minting"
     });
   },
+  startPolling: (walletAddress: string) => {
+    // Clear any existing polling
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+    }
 
-  // mockMintNft: async (walletAddress: string) => {
-  //   // Mock implementation - in real app, this would call the Aleo program
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       set({
-  //         nftStatus: "minted",
-  //         isExpired: false,
-  //         expirationBlock: 1000000,
-  //       });
-  //       resolve();
-  //     }, 5000); // 5 second delay as requested
-  //   });
-  // },
+    // Start polling every 10 seconds
+    pollingInterval = setInterval(async () => {
+      await get().checkNftStatus(walletAddress);
+      
+      // If NFT is found, stop polling
+      if (get().nftStatus === "minted") {
+        get().stopPolling();
+      }
+    }, 10000);
+  },
+  stopPolling: () => {
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      pollingInterval = null;
+    }
+  }
 }));
