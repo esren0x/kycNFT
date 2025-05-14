@@ -18,7 +18,9 @@ export default function DocsPage() {
 
           {/* Authentication Section */}
           <section className="bg-white rounded-xl p-8 shadow-sm mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Authentication</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              Authentication
+            </h2>
             <p className="text-gray-600 mb-4">
               All API requests require an API key to be included in the header.
             </p>
@@ -31,7 +33,9 @@ export default function DocsPage() {
 
           {/* Endpoints Section */}
           <section className="bg-white rounded-xl p-8 shadow-sm mb-8">
-            <h2 className="text-2xl font-semibold mb-6">Endpoints</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-gray-900">
+              Endpoints
+            </h2>
 
             {/* Verify Wallet Endpoint */}
             <div className="mb-8">
@@ -42,27 +46,35 @@ export default function DocsPage() {
                 <code className="text-primary-600">/api/verify</code>
               </div>
 
-              <h3 className="text-xl font-medium mb-4">
+              <h3 className="text-xl font-medium mb-4 text-gray-900">
                 Verify Wallet KYC Status
               </h3>
 
               <div className="mb-4">
-                <h4 className="font-medium mb-2">Query Parameters</h4>
+                <h4 className="font-medium mb-2 text-gray-900">
+                  Query Parameters
+                </h4>
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-left py-2 px-4">Parameter</th>
-                      <th className="text-left py-2 px-4">Type</th>
-                      <th className="text-left py-2 px-4">Description</th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Parameter
+                      </th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Type
+                      </th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Description
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b">
                       <td className="py-2 px-4">
-                        <code>wallet</code>
+                        <code className="text-gray-900">wallet</code>
                       </td>
-                      <td className="py-2 px-4">string</td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-4 text-gray-900">string</td>
+                      <td className="py-2 px-4 text-gray-900">
                         Aleo wallet address to verify
                       </td>
                     </tr>
@@ -71,7 +83,9 @@ export default function DocsPage() {
               </div>
 
               <div className="mb-4">
-                <h4 className="font-medium mb-2">Example Request</h4>
+                <h4 className="font-medium mb-2 text-gray-900">
+                  Example Request
+                </h4>
                 <div className="bg-gray-900 text-gray-100 rounded-lg p-4">
                   <pre>
                     <code>{`curl -X GET "https://kyc-nft.vercel.app/api/verify?wallet=aleo1..." \\
@@ -81,7 +95,9 @@ export default function DocsPage() {
               </div>
 
               <div className="mb-4">
-                <h4 className="font-medium mb-2">Example Response</h4>
+                <h4 className="font-medium mb-2 text-gray-900">
+                  Example Response
+                </h4>
                 <div className="bg-gray-900 text-gray-100 rounded-lg p-4">
                   <pre>
                     <code>{`{
@@ -94,40 +110,48 @@ export default function DocsPage() {
               </div>
 
               <div>
-                <h4 className="font-medium mb-2">Response Schema</h4>
+                <h4 className="font-medium mb-2 text-gray-900">
+                  Response Schema
+                </h4>
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-left py-2 px-4">Field</th>
-                      <th className="text-left py-2 px-4">Type</th>
-                      <th className="text-left py-2 px-4">Description</th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Field
+                      </th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Type
+                      </th>
+                      <th className="text-left py-2 px-4 text-gray-900">
+                        Description
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b">
                       <td className="py-2 px-4">
-                        <code>verified</code>
+                        <code className="text-gray-900">verified</code>
                       </td>
-                      <td className="py-2 px-4">boolean</td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-4 text-gray-900">boolean</td>
+                      <td className="py-2 px-4 text-gray-900">
                         Whether the wallet has valid KYC verification
                       </td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 px-4">
-                        <code>expirationBlock</code>
+                        <code className="text-gray-900">expirationBlock</code>
                       </td>
-                      <td className="py-2 px-4">number</td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-4 text-gray-900">number</td>
+                      <td className="py-2 px-4 text-gray-900">
                         Block number when the KYC verification expires
                       </td>
                     </tr>
                     <tr className="border-b">
                       <td className="py-2 px-4">
-                        <code>ownerId</code>
+                        <code className="text-gray-900">ownerId</code>
                       </td>
-                      <td className="py-2 px-4">string</td>
-                      <td className="py-2 px-4">
+                      <td className="py-2 px-4 text-gray-900">string</td>
+                      <td className="py-2 px-4 text-gray-900">
                         Unique identifier of the KYC verification
                       </td>
                     </tr>
@@ -139,7 +163,9 @@ export default function DocsPage() {
 
           {/* Error Handling Section */}
           <section className="bg-white rounded-xl p-8 shadow-sm mb-8">
-            <h2 className="text-2xl font-semibold mb-4">Error Handling</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              Error Handling
+            </h2>
             <p className="text-gray-600 mb-4">
               The API uses conventional HTTP response codes to indicate the
               success or failure of requests.
@@ -147,42 +173,50 @@ export default function DocsPage() {
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-2 px-4">Code</th>
-                  <th className="text-left py-2 px-4">Description</th>
+                  <th className="text-left py-2 px-4 text-gray-900">Code</th>
+                  <th className="text-left py-2 px-4 text-gray-900">
+                    Description
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b">
                   <td className="py-2 px-4">
-                    <code>200</code>
+                    <code className="text-gray-900">200</code>
                   </td>
-                  <td className="py-2 px-4">Success</td>
+                  <td className="py-2 px-4 text-gray-900">Success</td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">
-                    <code>400</code>
+                    <code className="text-gray-900">400</code>
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="py-2 px-4 text-gray-900">
                     Bad Request - Invalid wallet address
                   </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">
-                    <code>401</code>
+                    <code className="text-gray-900">401</code>
                   </td>
-                  <td className="py-2 px-4">Unauthorized - Invalid API key</td>
+                  <td className="py-2 px-4 text-gray-900">
+                    Unauthorized - Invalid API key
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">
-                    <code>404</code>
+                    <code className="text-gray-900">404</code>
                   </td>
-                  <td className="py-2 px-4">Not Found - Wallet not found</td>
+                  <td className="py-2 px-4 text-gray-900">
+                    Not Found - Wallet not found
+                  </td>
                 </tr>
                 <tr className="border-b">
                   <td className="py-2 px-4">
-                    <code>500</code>
+                    <code className="text-gray-900">500</code>
                   </td>
-                  <td className="py-2 px-4">Internal Server Error</td>
+                  <td className="py-2 px-4 text-gray-900">
+                    Internal Server Error
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -190,7 +224,9 @@ export default function DocsPage() {
 
           {/* Support Section */}
           <section className="bg-white rounded-xl p-8 shadow-sm">
-            <h2 className="text-2xl font-semibold mb-4">Need Help?</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+              Need Help?
+            </h2>
             <p className="text-gray-600 mb-4">
               If you need assistance integrating our API or have any questions,
               please do not hesitate to reach out to our support team.

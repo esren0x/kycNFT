@@ -39,7 +39,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
               Why Choose kycNFT?
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -59,7 +59,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">For Users</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                  For Users
+                </h3>
                 <p className="text-gray-600">
                   Complete KYC once and use your verified status across multiple
                   services on Aleo chain.
@@ -81,7 +83,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">For Companies</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                  For Companies
+                </h3>
                 <p className="text-gray-600">
                   Integrate KYC verification into your service without building
                   your own KYC infrastructure.
@@ -103,7 +107,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Easy Integration</h3>
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                  Easy Integration
+                </h3>
                 <p className="text-gray-600">
                   Simple API endpoints to verify wallet KYC status. Integrate in
                   minutes, not months.

@@ -29,7 +29,7 @@ export default function RecentNFTs() {
     <section className="py-20 bg-gradient-to-br from-primary-50 via-white to-secondary-50">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
             Recently Verified Wallets
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
