@@ -1,8 +1,6 @@
 export const fetchBlockHeight = async () => {
   try {
-    const response = await fetch(
-      "https://api.explorer.provable.com/v1/mainnet/latest/height"
-    );
+    const response = await fetch("/api/block-height");
 
     // Check if the response is OK (status 200)
     if (!response.ok) {
@@ -15,4 +13,3 @@ export const fetchBlockHeight = async () => {
     console.error("Error fetching block height:", err);
   }
 };
-

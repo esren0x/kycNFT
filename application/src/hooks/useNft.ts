@@ -46,6 +46,7 @@ export const useNft = create<NftState>((set, get) => ({
   checkNftStatus: async (walletAddress: string) => {
     try {
       const ownerId = await getOwnerIdFromMapping(walletAddress);
+      if (!ownerId) return;
       const hasNFT = !!(await checkIfHasNFT(ownerId));
       const expirationBlock = await getNFTExpirationBlock(ownerId);
       const blockHeight = await fetchBlockHeight();

@@ -1,10 +1,58 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { getAllOwnersInformation } from "../../lib/mappings";
 import { fetchBlockHeight } from "../../lib/utils";
 import NFT from "../nft";
+import { OwnerInformation } from "@/lib/mappings";
 
-export default async function Gallery() {
-  const owners = await getAllOwnersInformation();
-  const blockHeight = await fetchBlockHeight();
+export function SkeletonCard() {
+  return (
+    <div className="relative w-80 rounded-xl overflow-hidden bg-gray-200 p-[16px] shadow-lg animate-pulse">
+      <div className="bg-gray-300 rounded-xl p-6 relative">
+        <div className="flex justify-between items-center mb-4">
+          <div className="h-6 w-24 bg-gray-400 rounded"></div>
+          <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+        </div>
+        <div className="w-full h-48 bg-gray-400 rounded-lg mb-4"></div>
+        <div className="space-y-3">
+          <div>
+            <div className="h-4 w-24 bg-gray-400 rounded mb-2"></div>
+            <div className="h-4 w-32 bg-gray-400 rounded"></div>
+          </div>
+          <div>
+            <div className="h-4 w-24 bg-gray-400 rounded mb-2"></div>
+            <div className="h-4 w-32 bg-gray-400 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Gallery() {
+  const [owners, setOwners] = useState<OwnerInformation[]>([]);
+  const [blockHeight, setBlockHeight] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [ownersData, blockHeightData] = await Promise.all([
+          getAllOwnersInformation(),
+          fetchBlockHeight(),
+        ]);
+        setOwners(ownersData);
+        setBlockHeight(blockHeightData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const ownersWithExpired = owners.map((owner) => ({
     ...owner,
@@ -32,37 +80,53 @@ export default async function Gallery() {
               <h3 className="text-lg font-semibold text-gray-600 mb-2">
                 Total Verified
               </h3>
-              <p className="text-3xl font-bold text-primary-600">
-                {owners.length}
-              </p>
+              <div className="text-3xl font-bold text-primary-600">
+                {loading ? (
+                  <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  owners.length
+                )}
+              </div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-600 mb-2">
                 Active NFTs
               </h3>
-              <p className="text-3xl font-bold text-primary-600">
-                {ownersWithExpired.filter((owner) => !owner.expired).length}
-              </p>
+              <div className="text-3xl font-bold text-primary-600">
+                {loading ? (
+                  <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  ownersWithExpired.filter((owner) => !owner.expired).length
+                )}
+              </div>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm">
               <h3 className="text-lg font-semibold text-gray-600 mb-2">
                 Expired NFTs
               </h3>
-              <p className="text-3xl font-bold text-secondary-600">
-                {ownersWithExpired.filter((owner) => owner.expired).length}
-              </p>
+              <div className="text-3xl font-bold text-secondary-600">
+                {loading ? (
+                  <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  ownersWithExpired.filter((owner) => owner.expired).length
+                )}
+              </div>
             </div>
           </div>
 
           {/* NFT Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {owners.map((owner) => (
-              <NFT owner={owner} key={owner.ownerId} />
-            ))}
+            {loading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <SkeletonCard key={index} />
+                ))
+              : owners.map((owner) => (
+                  <NFT owner={owner} key={owner.ownerId} />
+                ))}
           </div>
 
           {/* Empty State */}
-          {owners.length === 0 && (
+          {!loading && owners.length === 0 && (
             <div className="text-center py-12">
               <div className="text-gray-400 mb-4">
                 <svg

@@ -17,13 +17,13 @@ export const convertLeoAddressToANSDomain = async (address: string) => {
   try {
     const response = await fetch(`${ANS_API_URL}primary_name/${address}`);
     if (!response.ok) {
-      console.error("No ANS domain found for the given address:", response);
+      console.debug("No ANS domain found for the given address:", address);
       return undefined;
     }
     const body = await response.json();
     return body.name;
   } catch (error) {
-    console.error("No ANS domain found for the given address:", error);
+    console.debug("No ANS domain found for the given address:", error);
     return undefined;
   }
 };

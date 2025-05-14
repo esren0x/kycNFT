@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import axios from "axios";
 import crypto from "crypto";
 import { executeMintTransaction } from "../utils/transaction";
+import { checkIfHasNFT } from "../../../../lib/mappings";
+import { getOwnerIdFromMapping } from "../../../../lib/mappings";
 
 const SUMSUB_API_URL = "https://api.sumsub.com";
 
@@ -106,29 +108,38 @@ export async function GET(request: Request) {
 
     if (response.data.reviewStatus === "completed") {
       status =
-      response.data.reviewResult?.reviewAnswer === "GREEN"
-        ? "completed"
-        : "failed";
+        response.data.reviewResult?.reviewAnswer === "GREEN"
+          ? "completed"
+          : "failed";
 
       if (status === "completed") {
         try {
-          console.log("minting the nft");
-          
-          // Execute the mint transaction with KYC level 1
-          const tx_id = await executeMintTransaction(
-            formattedWalletAddress,
-            1 // KYC level 1 for basic verification
-          );
+          console.log("checking if has NFT");
+          const ownerId = await getOwnerIdFromMapping(walletAddress);
+          if (!ownerId) {
+            throw new Error("Couldn't find owner ID");
+          }
+          const hasNFT = !!(await checkIfHasNFT(ownerId));
 
-          console.log("NFT mint transaction submitted:", tx_id);
-          
+          if (!hasNFT) {
+            console.log("minting the nft");
+
+            // Execute the mint transaction with KYC level 1
+            const tx_id = await executeMintTransaction(
+              formattedWalletAddress,
+              1 // KYC level 1 for basic verification
+            );
+
+            console.log("NFT mint transaction submitted:", tx_id);
+          } else {
+            console.log("NFT already minted");
+          }
+
           // Return both status and transaction ID
-          return NextResponse.json({ 
+          return NextResponse.json({
             status,
-            transactionId: tx_id,
-            message: "NFT mint transaction submitted successfully"
+            message: "NFT mint transaction submitted successfully",
           });
-
         } catch (mintError) {
           console.error("Failed to mint NFT:", mintError);
           throw mintError;

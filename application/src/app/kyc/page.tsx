@@ -13,7 +13,14 @@ import { KycStatus } from "@/components/KycStatus";
 export default function KYC() {
   const { publicKey, signMessage, wallet } = useWallet();
   const { initializeKyc, kycStatus, checkKycStatus, setKycStatus } = useKyc();
-  const { nftStatus, isExpired, expirationBlock, checkNftStatus, setTransactionId, startPolling } = useNft();
+  const {
+    nftStatus,
+    isExpired,
+    expirationBlock,
+    checkNftStatus,
+    setTransactionId,
+    startPolling,
+  } = useNft();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -26,6 +33,7 @@ export default function KYC() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (publicKey && kycStatus !== "failed" && kycStatus !== "completed") {
+        console.log("Checking KYC status 2");
         checkKycStatus(publicKey);
       }
     }, 30000);
@@ -83,6 +91,7 @@ export default function KYC() {
 
       if (reviewStatus === "completed") {
         if (reviewResult.reviewAnswer === "GREEN") {
+          console.log("KYC completed, checking status 1");
           checkKycStatus(publicKey!);
         } else {
           // If the review answer is not GREEN, mark as failed
@@ -98,13 +107,15 @@ export default function KYC() {
 
   const pollKycStatus = async () => {
     if (!publicKey) return;
-    
+
     try {
-      const response = await fetch(`/api/kyc/status?walletAddress=${publicKey}`);
+      const response = await fetch(
+        `/api/kyc/status?walletAddress=${publicKey}`
+      );
       const data = await response.json();
-      
+
       setKycStatus(data.status);
-      
+
       if (data.transactionId) {
         setTransactionId(data.transactionId);
         startPolling(publicKey);
@@ -160,7 +171,8 @@ export default function KYC() {
                       We are minting your NFT. This may take a few minutes...
                     </p>
                     <p className="text-sm text-gray-500">
-                      You can close this window. We'll notify you when the minting is complete.
+                      You can close this window. We will notify you when the
+                      minting is complete.
                     </p>
                   </div>
                 ) : (
