@@ -1,5 +1,6 @@
 import Link from "next/link";
 import RecentNFTs from "../components/RecentNFTs";
+import Roadmap from "../components/Roadmap";
 
 export default function Home() {
   return (
@@ -115,6 +116,9 @@ export default function Home() {
 
       {/* Live NFT Gallery */}
       <RecentNFTs />
+
+      {/* Roadmap Section */}
+      <Roadmap />
 
       {/* API Integration Section */}
       <section className="py-20 bg-white">

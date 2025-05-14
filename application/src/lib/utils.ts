@@ -1,6 +1,10 @@
-export const fetchBlockHeight = async () => {
+export const fetchBlockHeight = async (useInternalRoute: boolean = true) => {
   try {
-    const response = await fetch("/api/block-height");
+    const response = await fetch(
+      useInternalRoute
+        ? "/api/block-height"
+        : "https://api.explorer.provable.com/v1/mainnet/latest/height"
+    );
 
     // Check if the response is OK (status 200)
     if (!response.ok) {

@@ -52,8 +52,11 @@ export const checkIfHasNFT = async (
   return item?.value === "true";
 };
 
-export const getNFTExpirationBlock = async (ownerId: string) => {
-  const data = await fetchAllMappingValues("kyc_expiry_date");
+export const getNFTExpirationBlock = async (
+  ownerId: string,
+  useInternalRoute: boolean = true
+) => {
+  const data = await fetchAllMappingValues("kyc_expiry_date", useInternalRoute);
   const value = data.find((item: MappingItem) => item.key === ownerId)?.value;
   if (!value) return null;
   // Remove 'u64' suffix and convert to integer
