@@ -172,12 +172,6 @@ GET https://kyc-nft.vercel.app/api/verify?wallet=aleo1...
               >
                 Get Verified Now
               </Link>
-              <Link
-                href="/contact"
-                className="px-8 py-3 bg-transparent border border-white text-white rounded-lg hover:bg-white/10 transition-colors"
-              >
-                Contact Sales
-              </Link>
             </div>
           </div>
         </div>

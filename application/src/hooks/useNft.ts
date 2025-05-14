@@ -46,12 +46,11 @@ export const useNft = create<NftState>((set, get) => ({
   checkNftStatus: async (walletAddress: string) => {
     try {
       const ownerId = await getOwnerIdFromMapping(walletAddress);
-      if (!ownerId) return;
-      const hasNFT = !!(await checkIfHasNFT(ownerId));
-      const expirationBlock = await getNFTExpirationBlock(ownerId);
-      const blockHeight = await fetchBlockHeight();
+      console.log("ownerId", ownerId);
 
-      if (hasNFT) {
+      if (ownerId && !!(await checkIfHasNFT(ownerId))) {
+        const expirationBlock = await getNFTExpirationBlock(ownerId);
+        const blockHeight = await fetchBlockHeight();
         set({
           nftStatus: "minted",
           isExpired: expirationBlock ? expirationBlock < blockHeight : null,
@@ -86,7 +85,7 @@ export const useNft = create<NftState>((set, get) => ({
   setTransactionId: (txId: string) => {
     set({
       transactionId: txId,
-      nftStatus: "minting"
+      nftStatus: "minting",
     });
   },
   startPolling: (walletAddress: string) => {
@@ -98,7 +97,7 @@ export const useNft = create<NftState>((set, get) => ({
     // Start polling every 10 seconds
     pollingInterval = setInterval(async () => {
       await get().checkNftStatus(walletAddress);
-      
+
       // If NFT is found, stop polling
       if (get().nftStatus === "minted") {
         get().stopPolling();
@@ -110,5 +109,5 @@ export const useNft = create<NftState>((set, get) => ({
       clearInterval(pollingInterval);
       pollingInterval = null;
     }
-  }
+  },
 }));

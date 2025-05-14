@@ -41,6 +41,22 @@ export const Footer = () => (
                 Get Verified
               </Link>
             </li>
+            <li>
+              <Link
+                href="/gallery"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                Gallery
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/docs"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                API Documentation
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

@@ -126,12 +126,10 @@ export async function GET(request: Request) {
             console.log("minting the nft");
 
             // Execute the mint transaction with KYC level 1
-            const tx_id = await executeMintTransaction(
+            executeMintTransaction(
               formattedWalletAddress,
               1 // KYC level 1 for basic verification
             );
-
-            console.log("NFT mint transaction submitted:", tx_id);
           } else {
             console.log("NFT already minted");
           }

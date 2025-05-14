@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -32,14 +33,14 @@ export default function KYC() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (publicKey && kycStatus !== "failed" && kycStatus !== "completed") {
-        console.log("Checking KYC status 2");
-        checkKycStatus(publicKey);
+      if (publicKey && kycStatus === "completed") {
+        console.log("Checking NFT status 2");
+        checkNftStatus(publicKey);
       }
-    }, 30000);
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, [publicKey, checkKycStatus, kycStatus]);
+  }, [publicKey, kycStatus]);
 
   useEffect(() => {
     console.log("kycStatus", kycStatus);

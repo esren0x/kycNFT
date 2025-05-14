@@ -31,6 +31,18 @@ export const Header = () => {
               Get Verified
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
+            <Link
+              href="/gallery"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+            >
+              Gallery
+            </Link>
+            <Link
+              href="/docs"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+            >
+              Docs
+            </Link>
           </nav>
           <div className="flex items-center">
             {publicKey ? (
