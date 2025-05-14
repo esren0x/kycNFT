@@ -14,11 +14,14 @@ export type OwnerInformation = {
 };
 
 export const fetchAllMappingValues = async (
-  mapping: string
+  mapping: string,
+  useInternalRoute: boolean = true // Use internal route for fetching from the client to avoid cors issues
 ): Promise<MappingItem[]> => {
   try {
     const response = await fetch(
-      `/api/aleoscan?path=mapping&programId=${PROGRAM_ID}&mapping=${mapping}&all=true`
+      useInternalRoute
+        ? `/api/aleoscan?path=mapping&programId=${PROGRAM_ID}&mapping=${mapping}&all=true`
+        : `https://api.testnet.aleoscan.io/v2/mapping/list_program_mapping_values/${PROGRAM_ID}/${mapping}`
     );
     const data = await response.json();
     return Array.isArray(data.result) ? data.result : [];
@@ -28,13 +31,23 @@ export const fetchAllMappingValues = async (
   }
 };
 
-export const getOwnerIdFromMapping = async (walletAddress: string) => {
-  const data = await fetchAllMappingValues("nft_owners");
+export const getOwnerIdFromMapping = async (
+  walletAddress: string,
+  useInternalRoute: boolean = true
+) => {
+  console.log("getting owner id from mapping", walletAddress);
+  const data = await fetchAllMappingValues("nft_owners", useInternalRoute);
   return data.find((item: MappingItem) => item.value === walletAddress)?.key;
 };
 
-export const checkIfHasNFT = async (ownerId: string) => {
-  const data = await fetchAllMappingValues("address_token_validity");
+export const checkIfHasNFT = async (
+  ownerId: string,
+  useInternalRoute: boolean = true
+) => {
+  const data = await fetchAllMappingValues(
+    "address_token_validity",
+    useInternalRoute
+  );
   const item = data.find((item: MappingItem) => item.key === ownerId);
   return item?.value === "true";
 };

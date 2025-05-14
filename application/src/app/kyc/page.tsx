@@ -42,6 +42,10 @@ export default function KYC() {
   }, [publicKey, checkKycStatus, kycStatus]);
 
   useEffect(() => {
+    console.log("kycStatus", kycStatus);
+  }, [kycStatus]);
+
+  useEffect(() => {
     if (kycStatus === "completed" && publicKey && nftStatus !== "minted") {
       // Call the backend to trigger mint and get transactionId
       pollKycStatus();

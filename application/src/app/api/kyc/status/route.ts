@@ -115,12 +115,13 @@ export async function GET(request: Request) {
       if (status === "completed") {
         try {
           console.log("checking if has NFT");
-          const ownerId = await getOwnerIdFromMapping(walletAddress);
-          if (!ownerId) {
-            throw new Error("Couldn't find owner ID");
-          }
-          const hasNFT = !!(await checkIfHasNFT(ownerId));
+          const ownerId = await getOwnerIdFromMapping(walletAddress, false);
+          console.log("ownerId", ownerId);
 
+          const hasNFT = ownerId
+            ? !!(await checkIfHasNFT(ownerId, false))
+            : false;
+          console.log("hasNFT", hasNFT);
           if (!hasNFT) {
             console.log("minting the nft");
 
