@@ -10,6 +10,7 @@ import { LeoWalletAdapter } from "@demox-labs/aleo-wallet-adapter-leo";
 import { WalletInfo } from "@/components/WalletInfo";
 import { NftStatus } from "@/components/NftStatus";
 import { KycStatus } from "@/components/KycStatus";
+import { KycLoadingSkeleton } from "@/components/KycLoadingSkeleton";
 
 export default function KYC() {
   const { publicKey, signMessage, wallet } = useWallet();
@@ -19,8 +20,9 @@ export default function KYC() {
     isExpired,
     expirationBlock,
     checkNftStatus,
-    setTransactionId,
-    startPolling,
+    onMintStarted,
+    // setTransactionId,
+    // startPolling,
   } = useNft();
   const [isLoading, setIsLoading] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -33,27 +35,41 @@ export default function KYC() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (publicKey && kycStatus === "completed") {
+      if (
+        publicKey &&
+        (kycStatus === "completed" || nftStatus === "minting") &&
+        nftStatus !== "minted"
+      ) {
         console.log("Checking NFT status 2");
         checkNftStatus(publicKey);
       }
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [publicKey, kycStatus]);
 
   useEffect(() => {
     console.log("kycStatus", kycStatus);
+    if (kycStatus === "completed" && publicKey) {
+      console.log("Starting mint");
+      onMintStarted(publicKey);
+    }
   }, [kycStatus]);
 
   useEffect(() => {
-    if (kycStatus === "completed" && publicKey && nftStatus !== "minted") {
-      // Call the backend to trigger mint and get transactionId
-      pollKycStatus();
-    }
-    // Only run when KYC is completed and NFT is not minted
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [kycStatus, publicKey, nftStatus]);
+    console.log("nftStatus", nftStatus);
+  }, [nftStatus]);
+
+  console.log("nftStatus", nftStatus);
+
+  // useEffect(() => {
+  //   if (kycStatus === "completed" && publicKey && nftStatus !== "minted") {
+  //     // Call the backend to trigger mint and get transactionId
+  //     pollKycStatus();
+  //   }
+  //   // Only run when KYC is completed and NFT is not minted
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [kycStatus, publicKey, nftStatus]);
 
   const handleStartKyc = async () => {
     if (!publicKey || !signMessage) return;
@@ -110,25 +126,25 @@ export default function KYC() {
     console.error("WebSDK Error:", error);
   };
 
-  const pollKycStatus = async () => {
-    if (!publicKey) return;
+  // const pollKycStatus = async () => {
+  //   if (!publicKey) return;
 
-    try {
-      const response = await fetch(
-        `/api/kyc/status?walletAddress=${publicKey}`
-      );
-      const data = await response.json();
+  //   try {
+  //     const response = await fetch(
+  //       `/api/kyc/status?walletAddress=${publicKey}`
+  //     );
+  //     const data = await response.json();
 
-      setKycStatus(data.status);
+  //     setKycStatus(data.status);
 
-      if (data.transactionId) {
-        setTransactionId(data.transactionId);
-        startPolling(publicKey);
-      }
-    } catch (error) {
-      console.error("Failed to check KYC status:", error);
-    }
-  };
+  //     if (data.transactionId) {
+  //       setTransactionId(data.transactionId);
+  //       startPolling(publicKey);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to check KYC status:", error);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col">
@@ -139,13 +155,15 @@ export default function KYC() {
               <div className="space-y-6">
                 <WalletInfo />
 
-                {nftStatus === "minted" ? (
+                {nftStatus === "checking" ? (
+                  <KycLoadingSkeleton />
+                ) : nftStatus === "minted" ? (
                   <NftStatus
                     status={nftStatus}
                     expirationBlock={expirationBlock}
                     isExpired={isExpired}
                   />
-                ) : kycStatus === "completed" ? (
+                ) : kycStatus === "completed" || nftStatus === "minting" ? (
                   <div className="text-center py-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-100 mb-4">
                       <svg

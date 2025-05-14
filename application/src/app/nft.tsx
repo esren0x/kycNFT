@@ -49,7 +49,7 @@ export default function NFT({ owner }: { owner: OwnerInformation }) {
   `;
 
   return (
-    <div className="relative w-80 rounded-xl overflow-hidden bg-gradient-to-br from-purple-600 via-blue-500 to-teal-400 p-[16px] shadow-lg">
+    <div className="relative w-80 rounded-xl overflow-hidden bg-gradient-to-br from-purple-600 via-blue-500 to-teal-400 p-[16px] shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
       {/* SVG for circulating text */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-10"

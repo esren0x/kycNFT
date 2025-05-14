@@ -10,6 +10,33 @@ import { checkIfHasNFT, getNFTExpirationBlock } from "../lib/mappings";
 import { getOwnerIdFromMapping } from "../lib/mappings";
 import { fetchBlockHeight } from "../lib/utils";
 
+const MINTING_STATUS_KEY = "nft_minting_status";
+
+// Helper functions for managing wallet-specific minting status
+const getMintingStatuses = (): Record<string, boolean> => {
+  const stored = localStorage.getItem(MINTING_STATUS_KEY);
+  return stored ? JSON.parse(stored) : {};
+};
+
+const setMintingStatus = (walletAddress: string, isMinting: boolean) => {
+  const statuses = getMintingStatuses();
+  if (isMinting) {
+    statuses[walletAddress] = true;
+  } else {
+    delete statuses[walletAddress];
+  }
+  localStorage.setItem(MINTING_STATUS_KEY, JSON.stringify(statuses));
+};
+
+const clearMintingStatus = (walletAddress: string) => {
+  setMintingStatus(walletAddress, false);
+};
+
+const isWalletMinting = (walletAddress: string): boolean => {
+  const statuses = getMintingStatuses();
+  return !!statuses[walletAddress];
+};
+
 export const verifyKyc = async (walletAddress: string, wallet: Wallet) => {
   console.log("will verify kyc");
   const tx = Transaction.createTransaction(
@@ -25,7 +52,13 @@ export const verifyKyc = async (walletAddress: string, wallet: Wallet) => {
 };
 
 interface NftState {
-  nftStatus: "unverified" | "not_minted" | "minting" | "minted" | "expired";
+  nftStatus:
+    | "unverified"
+    | "not_minted"
+    | "minting"
+    | "minted"
+    | "expired"
+    | "checking";
   isExpired: boolean | null;
   expirationBlock: number | null;
   transactionId: string | null;
@@ -34,29 +67,43 @@ interface NftState {
   setTransactionId: (txId: string) => void;
   startPolling: (walletAddress: string) => void;
   stopPolling: () => void;
+  onMintStarted: (walletAddress: string) => void;
 }
 
 let pollingInterval: NodeJS.Timeout | null = null;
 
 export const useNft = create<NftState>((set, get) => ({
-  nftStatus: "not_minted",
+  nftStatus: "checking",
   isExpired: null,
   expirationBlock: null,
   transactionId: null,
   checkNftStatus: async (walletAddress: string) => {
     try {
+      // Check local storage first for this specific wallet
+      console.log("Checking NFT status for wallet:", walletAddress);
+
       const ownerId = await getOwnerIdFromMapping(walletAddress);
       console.log("ownerId", ownerId);
 
       if (ownerId && !!(await checkIfHasNFT(ownerId))) {
         const expirationBlock = await getNFTExpirationBlock(ownerId);
         const blockHeight = await fetchBlockHeight();
+        clearMintingStatus(walletAddress); // Clear minting status for this wallet if NFT is found
         set({
           nftStatus: "minted",
           isExpired: expirationBlock ? expirationBlock < blockHeight : null,
           expirationBlock: expirationBlock,
         });
       } else {
+        const isMinting = isWalletMinting(walletAddress);
+        console.log("Is wallet minting?", isMinting);
+
+        if (isMinting) {
+          console.log("Setting state to minting");
+          set({ nftStatus: "minting" });
+          return;
+        }
+
         set({
           nftStatus: "not_minted",
           isExpired: null,
@@ -71,6 +118,7 @@ export const useNft = create<NftState>((set, get) => ({
     }
   },
   resetNftStatus: () => {
+    // We don't clear all minting statuses here anymore since it's wallet-specific
     set({
       nftStatus: "unverified",
       isExpired: null,
@@ -109,5 +157,12 @@ export const useNft = create<NftState>((set, get) => ({
       clearInterval(pollingInterval);
       pollingInterval = null;
     }
+  },
+  onMintStarted: (walletAddress: string) => {
+    console.log("Starting mint for wallet:", walletAddress);
+    setMintingStatus(walletAddress, true);
+    console.log("Set minting status in localStorage");
+    set({ nftStatus: "minting" });
+    console.log("Updated zustand state to minting");
   },
 }));

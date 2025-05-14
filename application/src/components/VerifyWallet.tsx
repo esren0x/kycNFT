@@ -6,6 +6,7 @@ import { useWallet } from "@demox-labs/aleo-wallet-adapter-react";
 import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 import { useNft } from "@/hooks/useNft";
 import { convertANSDomainToWalletAddress } from "@/lib/ans";
+import { KycLoadingSkeleton } from "@/components/KycLoadingSkeleton";
 export default function VerifyWallet() {
   const { publicKey } = useWallet();
   const {
@@ -56,6 +57,7 @@ export default function VerifyWallet() {
       address = convertedAddress;
     }
     try {
+      console.log("Checking NFT status for wallet:", address);
       await checkNftStatus(address);
     } catch (err) {
       setError(
@@ -109,6 +111,8 @@ export default function VerifyWallet() {
           </p>
         </div>
       );
+    } else if (nftStatus === "checking") {
+      return <KycLoadingSkeleton />;
     }
     return null;
   };

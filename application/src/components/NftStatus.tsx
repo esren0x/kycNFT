@@ -1,3 +1,104 @@
+import { fetchBlockHeight } from "../lib/utils";
+import { useEffect, useState } from "react";
+
+interface EstimatedExpirationTimeProps {
+  expirationBlock: number | null;
+}
+
+const EstimatedExpirationTime = ({
+  expirationBlock,
+}: EstimatedExpirationTimeProps) => {
+  const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const calculateExpiration = async () => {
+      setIsLoading(true);
+      setError(null);
+      setEstimatedDate(null);
+
+      if (expirationBlock === null || expirationBlock <= 0) {
+        setError("Invalid expiration block provided.");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Assuming fetchBlockHeight is async: () => Promise<number>
+        const currentBlock = await fetchBlockHeight();
+
+        if (typeof currentBlock !== "number" || isNaN(currentBlock)) {
+          setError("Failed to fetch a valid current block height.");
+          setIsLoading(false);
+          return;
+        }
+
+        if (currentBlock >= expirationBlock) {
+          setError("The expiration time has passed or is current.");
+          setIsLoading(false);
+          return;
+        }
+
+        const blocksRemaining = expirationBlock - currentBlock;
+        const secondsRemaining = blocksRemaining * 3; // 3 seconds per block
+
+        const expirationTimestamp = Date.now() + secondsRemaining * 1000;
+        setEstimatedDate(new Date(expirationTimestamp));
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError(
+            "An unexpected error occurred while calculating expiration."
+          );
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    calculateExpiration();
+  }, [expirationBlock]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <p>Estimated Expiration Time:</p>
+        <p>Calculating...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <p>Estimated Expiration Time:</p>
+        <p style={{ color: "red" }}>Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (estimatedDate) {
+    return (
+      <div>
+        <p>Estimated Expiration Time:</p>
+        <p>
+          <strong>{estimatedDate.toLocaleString()}</strong>
+        </p>
+      </div>
+    );
+  }
+
+  // Fallback message
+  return (
+    <div>
+      <p>Estimated Expiration Time:</p>
+      <p>Unable to determine expiration time.</p>
+    </div>
+  );
+};
+
 interface NftStatusProps {
   status: string;
   expirationBlock: number | null;
@@ -65,6 +166,7 @@ export const NftStatus = ({
               Your KYC NFT is valid until the block:
             </p>
             <p className="text-gray-800 font-semibold">{expirationBlock}</p>
+            <EstimatedExpirationTime expirationBlock={expirationBlock} />
           </>
         ) : (
           <>

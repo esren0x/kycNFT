@@ -1,5 +1,4 @@
 import SumsubWebSdk from "@sumsub/websdk-react";
-
 interface KycStatusProps {
   status: string;
   isLoading: boolean;
