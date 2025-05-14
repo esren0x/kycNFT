@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NFT from "../app/nft";
 import { getAllOwnersInformation, OwnerInformation } from "../lib/mappings";
-import { SkeletonCard } from "../app/gallery/page";
+import { SkeletonCard } from "../app/gallery/skeleton";
 
 export default function RecentNFTs() {
   const [recentOwners, setRecentOwners] = useState<OwnerInformation[]>([]);
