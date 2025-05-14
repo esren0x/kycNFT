@@ -193,7 +193,7 @@ export default function DocsPage() {
             <h2 className="text-2xl font-semibold mb-4">Need Help?</h2>
             <p className="text-gray-600 mb-4">
               If you need assistance integrating our API or have any questions,
-              please don't hesitate to reach out to our support team.
+              please do not hesitate to reach out to our support team.
             </p>
             <Link
               href="mailto:support@kyc-nft.com"
