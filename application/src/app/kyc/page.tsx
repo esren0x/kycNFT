@@ -46,7 +46,7 @@ export default function KYC() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [publicKey, kycStatus]);
+  }, [publicKey, kycStatus, nftStatus]);
 
   useEffect(() => {
     console.log("kycStatus", kycStatus);

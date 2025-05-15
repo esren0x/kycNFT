@@ -58,7 +58,8 @@ interface NftState {
     | "minting"
     | "minted"
     | "expired"
-    | "checking";
+    | "checking"
+    | "error";
   isExpired: boolean | null;
   expirationBlock: number | null;
   transactionId: string | null;
