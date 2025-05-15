@@ -5,7 +5,7 @@ interface EstimatedExpirationTimeProps {
   expirationBlock: number | null;
 }
 
-const EstimatedExpirationTime = ({
+export const EstimatedExpirationTime = ({
   expirationBlock,
 }: EstimatedExpirationTimeProps) => {
   const [estimatedDate, setEstimatedDate] = useState<Date | null>(null);

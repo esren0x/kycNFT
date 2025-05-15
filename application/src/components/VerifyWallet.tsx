@@ -7,6 +7,7 @@ import { WalletMultiButton } from "@demox-labs/aleo-wallet-adapter-reactui";
 import { useNft } from "@/hooks/useNft";
 import { convertANSDomainToWalletAddress } from "@/lib/ans";
 import { KycLoadingSkeleton } from "@/components/KycLoadingSkeleton";
+import { EstimatedExpirationTime } from "./NftStatus";
 export default function VerifyWallet() {
   const { publicKey } = useWallet();
   const {
@@ -90,10 +91,13 @@ export default function VerifyWallet() {
             </h3>
           </div>
           {expirationBlock && (
-            <p className="mt-2 text-sm text-green-600 font-abcd">
-              Expiration Block: {expirationBlock}
-              {isExpired && " (Expired)"}
-            </p>
+            <div className="flex text-sm  gap-2 flex-col text-green-600">
+              <p className="mt-2 text-sm  font-abcd">
+                Expiration Block: {expirationBlock}
+                {isExpired && " (Expired)"}
+              </p>
+              <EstimatedExpirationTime expirationBlock={expirationBlock} />
+            </div>
           )}
         </div>
       );
