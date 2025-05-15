@@ -63,8 +63,29 @@ export const EstimatedExpirationTime = ({
 
   if (isLoading) {
     return (
-      <div>
-        <p className="font-abcd">Estimated Expiration Time:</p>
+      <div className="text-center">
+        <div className="flex items-center justify-center">
+          <p className="font-abcd mr-1">Estimated Expiration Time</p>
+          <div className="relative group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+              />
+            </svg>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Estimated based on an average block time of 3 seconds.
+            </span>
+          </div>
+        </div>
         <p className="font-abcd">Calculating...</p>
       </div>
     );
@@ -72,8 +93,29 @@ export const EstimatedExpirationTime = ({
 
   if (error) {
     return (
-      <div>
-        <p className="font-abcd">Estimated Expiration Time:</p>
+      <div className="text-center">
+        <div className="flex items-center justify-center">
+          <p className="font-abcd mr-1">Estimated Expiration Time</p>
+          <div className="relative group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+              />
+            </svg>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Estimated based on an average block time of 3 seconds.
+            </span>
+          </div>
+        </div>
         <p style={{ color: "red" }} className="font-abcd">
           Error: {error}
         </p>
@@ -83,8 +125,29 @@ export const EstimatedExpirationTime = ({
 
   if (estimatedDate) {
     return (
-      <div>
-        <p className="font-abcd">Estimated Expiration Time:</p>
+      <div className="text-center">
+        <div className="flex items-center justify-center">
+          <p className="font-abcd mr-1">Estimated Expiration Time</p>
+          <div className="relative group">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-4 h-4 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+              />
+            </svg>
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Estimated based on an average block time of 3 seconds.
+            </span>
+          </div>
+        </div>
         <p className="font-abcd">
           <strong className="font-abcd">
             {estimatedDate.toLocaleString()}
@@ -96,8 +159,29 @@ export const EstimatedExpirationTime = ({
 
   // Fallback message
   return (
-    <div>
-      <p className="font-abcd">Estimated Expiration Time:</p>
+    <div className="text-center">
+      <div className="flex items-center justify-center">
+        <p className="font-abcd mr-1">Estimated Expiration Time</p>
+        <div className="relative group">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-4 h-4 text-gray-500"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+            />
+          </svg>
+          <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 bg-gray-700 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Estimated based on an average block time of 3 seconds.
+          </span>
+        </div>
+      </div>
       <p className="font-abcd">Unable to determine expiration time.</p>
     </div>
   );

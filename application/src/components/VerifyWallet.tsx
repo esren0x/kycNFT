@@ -83,16 +83,16 @@ export default function VerifyWallet() {
     }
     if (nftStatus === "minted") {
       return (
-        <div className="mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
-          <div className="flex items-center">
+        <div className="mt-4 p-4 rounded-lg bg-green-50 border border-green-200 text-center">
+          <div className="flex items-center justify-center">
             <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
             <h3 className="text-lg font-innovator font-semibold text-green-700">
               Wallet is KYC Verified
             </h3>
           </div>
           {expirationBlock && (
-            <div className="flex text-sm  gap-2 flex-col text-green-600">
-              <p className="mt-2 text-sm  font-abcd">
+            <div className="flex text-sm gap-2 flex-col text-green-600 items-center">
+              <p className="mt-2 text-sm font-abcd">
                 Expiration Block: {expirationBlock}
                 {isExpired && " (Expired)"}
               </p>
@@ -103,8 +103,8 @@ export default function VerifyWallet() {
       );
     } else if (nftStatus === "not_minted") {
       return (
-        <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200">
-          <div className="flex items-center">
+        <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 text-center">
+          <div className="flex items-center justify-center">
             <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
             <h3 className="text-lg font-innovator font-semibold text-red-700">
               Wallet is not KYC Verified
