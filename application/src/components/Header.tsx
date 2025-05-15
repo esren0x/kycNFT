@@ -17,7 +17,7 @@ export const Header = () => {
               href="/"
               className="text-2xl font-innovator font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 hover:opacity-80 transition-opacity"
             >
-              VerifyIT
+              Verifaleo
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
