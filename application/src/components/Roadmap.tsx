@@ -49,21 +49,21 @@ export default function Roadmap() {
       icon: FaUserShield,
       title: "Multi-Provider KYC Network",
       description:
-        "Expanding our network of trusted KYC providers to enhance decentralization and provide users with more verification options while maintaining high security standards.",
+        "Expanding our network of trusted KYC providers to enhance decentralization. Currently we're using Sumsub sandbox environment for testing. We've pending applications to use Onfido and Veriff.",
       quarter: "Q3 2025",
     },
     {
       icon: FaWallet,
-      title: "Wallet Integration",
+      title: "dApp and Wallet partnerships",
       description:
-        "Implementing wallet plugins and extensions to display KYC verification status directly in popular Aleo wallets, making it easy to identify verified users across the ecosystem.",
+        "Our simple “Verification” API could be used on multiple Aleo dApps and Wallets. It increases security and allow an easy way to identify Verified users across the Aleo ecosystem",
       quarter: "Q4 2025",
     },
     {
       icon: FaCoins,
       title: "Sustainable Economics",
       description:
-        "Developing a robust tokenomics model with DAO treasury management to ensure long-term sustainability while keeping services accessible to all users.",
+        "Developing a robust tokenomics to ensure long-term sustainability while keeping services accessible to all users since KYC providers are not free.",
       quarter: "Q1 2026",
     },
   ];
