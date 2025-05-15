@@ -16,10 +16,12 @@ https://verifaleo.vercel.app/
 The Aleo program that handles the KYC NFT minting and verification logic.
 
 ### Contract Addresses
+
 - Mainnet: https://beta.explorer.provable.com/program/nftonaleokyc_v12.aleo
 - Testnet: https://testnet.explorer.provable.com/program/nftonaleokyc_v12.aleo
 
 ### Setup
+
 ```bash
 cd program
 leo build
@@ -30,24 +32,27 @@ leo build
 The full-stack application consisting of a Next.js frontend and API endpoints for KYC verification.
 
 ### Live Demo
+
 Visit [https://verifaleo.vercel.app/](https://verifaleo.vercel.app/)
 
 ### Local Development
+
 ```bash
 cd application
 
 # Install dependencies
-npm install
+yarn
 
 # Set up environment variables
-cp .env.example .env.local
+cp .env.example .env
 # Edit .env.local with your configuration
 
 # Run development server
-npm run dev
+yarn dev
 ```
 
 ### Environment Variables
+
 ```env
 NEXT_PUBLIC_PROGRAM_ID=your_program_id
 NODE_API_URL=your_node_api_url
@@ -58,6 +63,7 @@ NODE_API_URL=your_node_api_url
 A separate Node.js API service that handles the minting and proving operations for the KYC NFTs.
 
 ### Setup
+
 ```bash
 cd node-api
 
@@ -73,33 +79,9 @@ npm start
 ```
 
 ### Environment Variables
+
 ```env
 PROVABLE_PRIVATE_KEY=your_private_key
 PUBLIC_PROGRAM_ID=your_program_id
 PORT=3001
 ```
-
-### API Endpoints
-
-#### POST /mint
-Mints a new KYC NFT for a verified wallet.
-Demo of the API: https://verifaleo.vercel.app/api/verify?wallet=aleo1zl0lc5806yykafjvnmr2u0te3pztwran387rxf40r5uem9e7puzsljpsu3
-
-
-Request:
-```json
-{
-  "walletAddress": "aleo1...",
-  "kycLevel": 1
-}
-```
-
-Response:
-```json
-{
-  "success": true,
-  "transactionId": "tx_id..."
-}
-```
-
-
