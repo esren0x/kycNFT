@@ -43,6 +43,11 @@ module.exports = {
           "100%": { "--tw-text-scroll-offset": "-100%" },
         },
       },
+      fontFamily: {
+        sans: ["var(--font-innovator)", "sans-serif"], // Sets the default font
+        innovator: ["var(--font-innovator)", "sans-serif"],
+        abcd: ["var(--font-abcd)", "monospace"],
+      },
     },
   },
   plugins: [],

@@ -10,7 +10,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 mb-6">
+            <h1 className="text-5xl md:text-6xl font-innovator font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 mb-6">
               KYC Verification on Aleo Chain
             </h1>
             <p className="text-xl text-gray-600 mb-8">
