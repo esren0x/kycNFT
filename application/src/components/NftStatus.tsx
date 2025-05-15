@@ -63,7 +63,7 @@ export const EstimatedExpirationTime = ({
 
   if (isLoading) {
     return (
-      <div className="text-center">
+      <div className="text-center text-gray-800">
         <div className="flex items-center justify-center">
           <p className="font-abcd mr-1">Estimated Expiration Time</p>
           <div className="relative group">
@@ -125,7 +125,7 @@ export const EstimatedExpirationTime = ({
 
   if (estimatedDate) {
     return (
-      <div className="text-center">
+      <div className="text-center text-gray-800">
         <div className="flex items-center justify-center">
           <p className="font-abcd mr-1">Estimated Expiration Time</p>
           <div className="relative group">
