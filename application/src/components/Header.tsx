@@ -15,7 +15,7 @@ export const Header = () => {
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-2xl  font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 hover:opacity-80 transition-opacity"
+              className="text-2xl font-innovator font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 hover:opacity-80 transition-opacity"
             >
               VerifyIT
             </Link>
@@ -23,27 +23,27 @@ export const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="/verify"
-              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group font-abcd"
             >
               Verify
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               href="/kyc"
-              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group font-abcd"
             >
               Get Verified
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300"></span>
             </Link>
             <Link
               href="/gallery"
-              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group font-abcd"
             >
               Gallery
             </Link>
             <Link
               href="/docs"
-              className="text-gray-600 hover:text-primary-600 transition-colors relative group"
+              className="text-gray-600 hover:text-primary-600 transition-colors relative group font-abcd"
             >
               Docs
             </Link>
@@ -91,28 +91,28 @@ export const Header = () => {
         <div className="md:hidden bg-white shadow-lg py-2">
           <Link
             href="/verify"
-            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600"
+            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 font-abcd"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Verify
           </Link>
           <Link
             href="/kyc"
-            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600"
+            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 font-abcd"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Get Verified
           </Link>
           <Link
             href="/gallery"
-            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600"
+            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 font-abcd"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Gallery
           </Link>
           <Link
             href="/docs"
-            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600"
+            className="block px-4 py-2 text-gray-600 hover:bg-primary-50 hover:text-primary-600 font-abcd"
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Docs

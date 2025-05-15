@@ -27,7 +27,7 @@ const RoadmapItem = ({
         <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-full flex items-center justify-center z-10 shadow-lg border-4 border-white">
           <Icon className="w-7 h-7 text-primary-600" />
         </div>
-        <div className="mt-2 text-sm font-semibold text-primary-600 bg-white px-2 z-10">
+        <div className="mt-2 text-sm font-semibold text-primary-600 bg-white px-2 z-10 font-abcd">
           {quarter}
         </div>
       </div>
@@ -35,8 +35,10 @@ const RoadmapItem = ({
 
     {/* Content Card */}
     <div className="flex-1 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow p-6 mb-12">
-      <h3 className="text-xl font-semibold mb-2 text-gray-900">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="text-xl font-innovator font-semibold mb-2 text-gray-900">
+        {title}
+      </h3>
+      <p className="text-gray-600 font-abcd">{description}</p>
     </div>
   </div>
 );
@@ -71,10 +73,10 @@ export default function Roadmap() {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600">
+            <h2 className="text-3xl font-innovator font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600">
               Our Roadmap
             </h2>
-            <p className="mt-4 text-gray-600 text-lg">
+            <p className="mt-4 text-gray-600 text-lg font-abcd">
               Building the future of decentralized identity verification
             </p>
           </div>

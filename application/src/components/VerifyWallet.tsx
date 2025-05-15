@@ -85,12 +85,12 @@ export default function VerifyWallet() {
         <div className="mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-            <h3 className="text-lg font-semibold text-green-700">
+            <h3 className="text-lg font-innovator font-semibold text-green-700">
               Wallet is KYC Verified
             </h3>
           </div>
           {expirationBlock && (
-            <p className="mt-2 text-sm text-green-600">
+            <p className="mt-2 text-sm text-green-600 font-abcd">
               Expiration Block: {expirationBlock}
               {isExpired && " (Expired)"}
             </p>
@@ -102,11 +102,11 @@ export default function VerifyWallet() {
         <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200">
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-red-500 mr-2"></div>
-            <h3 className="text-lg font-semibold text-red-700">
+            <h3 className="text-lg font-innovator font-semibold text-red-700">
               Wallet is not KYC Verified
             </h3>
           </div>
-          <p className="mt-2 text-sm text-red-600">
+          <p className="mt-2 text-sm text-red-600 font-abcd">
             This wallet has not completed the KYC verification process.
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function VerifyWallet() {
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+      <h2 className="text-2xl font-innovator font-bold text-gray-900 mb-6">
         Verify Wallet KYC Status
       </h2>
 
@@ -129,7 +129,7 @@ export default function VerifyWallet() {
           <div>
             <label
               htmlFor="walletAddress"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 mb-1 font-abcd"
             >
               Enter Aleo Wallet Address or ANS Domain
             </label>
@@ -140,12 +140,12 @@ export default function VerifyWallet() {
                 value={inputAddress}
                 onChange={(e) => setInputAddress(e.target.value)}
                 placeholder="aleo1... or your.ans"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-abcd"
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputAddress.trim()}
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed font-abcd"
               >
                 {isLoading ? "Verifying..." : "Verify"}
               </button>
@@ -160,13 +160,13 @@ export default function VerifyWallet() {
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-white text-gray-500">or</span>
+          <span className="px-2 bg-white text-gray-500 font-abcd">or</span>
         </div>
       </div>
 
       {/* Connect Wallet Button */}
       <div className="text-center">
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-gray-600 mb-4 font-abcd">
           Connect your wallet to verify its status
         </p>
         <div className="flex justify-center">
@@ -177,7 +177,7 @@ export default function VerifyWallet() {
       {/* Error Display */}
       {error && (
         <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200">
-          <p className="text-sm text-red-600">{error}</p>
+          <p className="text-sm text-red-600 font-abcd">{error}</p>
         </div>
       )}
 
@@ -190,7 +190,7 @@ export default function VerifyWallet() {
           <button
             onClick={() => handleVerify(publicKey)}
             disabled={isLoading}
-            className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+            className="text-primary-600 hover:text-primary-700 text-sm font-medium font-abcd"
           >
             Check my wallet status
           </button>

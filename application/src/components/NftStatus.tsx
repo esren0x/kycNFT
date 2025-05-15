@@ -64,8 +64,8 @@ const EstimatedExpirationTime = ({
   if (isLoading) {
     return (
       <div>
-        <p>Estimated Expiration Time:</p>
-        <p>Calculating...</p>
+        <p className="font-abcd">Estimated Expiration Time:</p>
+        <p className="font-abcd">Calculating...</p>
       </div>
     );
   }
@@ -73,8 +73,10 @@ const EstimatedExpirationTime = ({
   if (error) {
     return (
       <div>
-        <p>Estimated Expiration Time:</p>
-        <p style={{ color: "red" }}>Error: {error}</p>
+        <p className="font-abcd">Estimated Expiration Time:</p>
+        <p style={{ color: "red" }} className="font-abcd">
+          Error: {error}
+        </p>
       </div>
     );
   }
@@ -82,9 +84,11 @@ const EstimatedExpirationTime = ({
   if (estimatedDate) {
     return (
       <div>
-        <p>Estimated Expiration Time:</p>
-        <p>
-          <strong>{estimatedDate.toLocaleString()}</strong>
+        <p className="font-abcd">Estimated Expiration Time:</p>
+        <p className="font-abcd">
+          <strong className="font-abcd">
+            {estimatedDate.toLocaleString()}
+          </strong>
         </p>
       </div>
     );
@@ -93,8 +97,8 @@ const EstimatedExpirationTime = ({
   // Fallback message
   return (
     <div>
-      <p>Estimated Expiration Time:</p>
-      <p>Unable to determine expiration time.</p>
+      <p className="font-abcd">Estimated Expiration Time:</p>
+      <p className="font-abcd">Unable to determine expiration time.</p>
     </div>
   );
 };
@@ -128,10 +132,10 @@ export const NftStatus = ({
             ></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold text-primary-600 mb-2">
+        <h2 className="text-2xl font-innovator font-semibold text-primary-600 mb-2">
           No NFT Found
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-abcd">
           Complete the KYC process to mint your NFT.
         </p>
       </div>
@@ -159,24 +163,28 @@ export const NftStatus = ({
 
         {!isExpired ? (
           <>
-            <h2 className="text-2xl font-semibold text-primary-600 mb-2">
+            <h2 className="text-2xl font-innovator font-semibold text-primary-600 mb-2">
               NFT Minted Successfully!
             </h2>
-            <p className="text-gray-600 mb-2">
+            <p className="text-gray-600 mb-2 font-abcd">
               Your KYC NFT is valid until the block:
             </p>
-            <p className="text-gray-800 font-semibold">{expirationBlock}</p>
+            <p className="text-gray-800 font-semibold font-abcd">
+              {expirationBlock}
+            </p>
             <EstimatedExpirationTime expirationBlock={expirationBlock} />
           </>
         ) : (
           <>
-            <h2 className="text-2xl font-semibold text-red-600 mb-2">
+            <h2 className="text-2xl font-innovator font-semibold text-red-600 mb-2">
               NFT Expired
             </h2>
-            <p className="text-gray-600 mb-2">
+            <p className="text-gray-600 mb-2 font-abcd">
               Your KYC NFT validity has expired on the block:
             </p>
-            <p className="text-gray-800 font-semibold">{expirationBlock}</p>
+            <p className="text-gray-800 font-semibold font-abcd">
+              {expirationBlock}
+            </p>
           </>
         )}
       </div>

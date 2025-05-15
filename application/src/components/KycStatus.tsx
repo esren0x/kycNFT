@@ -23,21 +23,21 @@ export const KycStatus = ({
   if (!accessToken && status === "not_started") {
     return (
       <div className="text-center py-8">
-        <h2 className="text-2xl font-semibold text-primary-600 mb-4">
+        <h2 className="text-2xl font-innovator font-semibold text-primary-600 mb-4">
           Start Your KYC Verification
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-6 font-abcd">
           Complete the verification process to mint your KYC NFT
         </p>
         {nftStatus === "error" && (
-          <p className="text-red-600 mb-6">
+          <p className="text-red-600 mb-6 font-abcd">
             Error minting NFT. Please try again.
           </p>
         )}
         <button
           onClick={onStartKyc}
           disabled={isLoading}
-          className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 transition-colors"
+          className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 transition-colors font-abcd"
         >
           {isLoading ? (
             <>
@@ -111,10 +111,10 @@ export const KycStatus = ({
             ></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold text-primary-600 mb-2">
+        <h2 className="text-2xl font-innovator font-semibold text-primary-600 mb-2">
           Verification Completed!
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-abcd">
           Your KYC verification has been successfully completed. Your NFT will
           be minted shortly...
         </p>
@@ -140,10 +140,10 @@ export const KycStatus = ({
             ></path>
           </svg>
         </div>
-        <h2 className="text-2xl font-semibold text-red-600 mb-2">
+        <h2 className="text-2xl font-innovator font-semibold text-red-600 mb-2">
           Verification Failed
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 font-abcd">
           Your KYC verification could not be completed. Please try again.
         </p>
       </div>

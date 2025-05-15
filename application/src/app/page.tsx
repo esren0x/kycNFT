@@ -13,7 +13,7 @@ export default function Home() {
             <h1 className="text-5xl md:text-6xl font-innovator font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 mb-6">
               KYC Verification on Aleo Chain
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 mb-8 font-abcd">
               Secure, decentralized KYC verification for Aleo wallets. Verify
               once, use everywhere.
             </p>
@@ -39,7 +39,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
+            <h2 className="text-3xl font-innovator font-bold text-center mb-12 text-gray-900">
               Why Choose kycNFT?
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -59,10 +59,10 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                <h3 className="text-xl font-innovator font-semibold mb-2 text-gray-900">
                   For Users
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 font-abcd">
                   Complete KYC once and use your verified status across multiple
                   services on Aleo chain.
                 </p>
@@ -83,10 +83,10 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                <h3 className="text-xl font-innovator font-semibold mb-2 text-gray-900">
                   For Companies
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 font-abcd">
                   Integrate KYC verification into your service without building
                   your own KYC infrastructure.
                 </p>
@@ -107,10 +107,10 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                <h3 className="text-xl font-innovator font-semibold mb-2 text-gray-900">
                   Easy Integration
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 font-abcd">
                   Simple API endpoints to verify wallet KYC status. Integrate in
                   minutes, not months.
                 </p>
@@ -130,7 +130,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">
+            <h2 className="text-3xl font-innovator font-bold text-center mb-12">
               Simple API Integration
             </h2>
             <div className="bg-gray-50 rounded-xl p-6 mb-8">
@@ -167,8 +167,10 @@ GET https://kyc-nft.vercel.app/api/verify?wallet=aleo1...
       <section className="py-20 bg-gradient-to-br from-primary-600 to-secondary-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-            <p className="text-xl mb-8 opacity-90">
+            <h2 className="text-3xl font-innovator font-bold mb-6">
+              Ready to Get Started?
+            </h2>
+            <p className="text-xl mb-8 opacity-90 font-abcd">
               Join the growing network of verified Aleo wallets and services.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
