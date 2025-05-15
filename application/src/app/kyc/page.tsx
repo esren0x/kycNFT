@@ -201,6 +201,7 @@ export default function KYC() {
                 ) : (
                   <KycStatus
                     status={kycStatus}
+                    nftStatus={nftStatus}
                     isLoading={isLoading}
                     onStartKyc={handleStartKyc}
                     accessToken={accessToken}

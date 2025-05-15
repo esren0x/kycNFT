@@ -100,9 +100,24 @@ export const useNft = create<NftState>((set, get) => ({
         console.log("Is wallet minting?", isMinting);
 
         if (isMinting) {
-          console.log("Setting state to minting");
-          set({ nftStatus: "minting" });
-          return;
+          // Call the endpoint to verify if the minting transaction has failed
+          const response = await fetch("/api/kyc/verify-error", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ walletAddress }),
+          });
+          const data = await response.json();
+          if (!data.hasError) {
+            console.log("Setting state to minting");
+            set({ nftStatus: "minting" });
+            return;
+          } else {
+            console.log("Setting state to error");
+            set({ nftStatus: "error" });
+            return;
+          }
         }
 
         set({

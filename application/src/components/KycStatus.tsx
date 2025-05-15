@@ -1,6 +1,7 @@
 import SumsubWebSdk from "@sumsub/websdk-react";
 interface KycStatusProps {
   status: string;
+  nftStatus: string;
   isLoading: boolean;
   onStartKyc: () => void;
   accessToken: string | null;
@@ -11,6 +12,7 @@ interface KycStatusProps {
 
 export const KycStatus = ({
   status,
+  nftStatus,
   isLoading,
   onStartKyc,
   accessToken,
@@ -27,6 +29,11 @@ export const KycStatus = ({
         <p className="text-gray-600 mb-6">
           Complete the verification process to mint your KYC NFT
         </p>
+        {nftStatus === "error" && (
+          <p className="text-red-600 mb-6">
+            Error minting NFT. Please try again.
+          </p>
+        )}
         <button
           onClick={onStartKyc}
           disabled={isLoading}
